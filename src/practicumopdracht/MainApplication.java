@@ -24,7 +24,6 @@ public class MainApplication extends Application {
         PersoonView persoonView = new PersoonView();
 
         bedrijfView.getRoot(stage);
-        persoonView.getRoot(stage);
 
         stage.setTitle(this.TITLE);
         stage.setWidth(this.WIDTH);
