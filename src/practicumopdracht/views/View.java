@@ -1,7 +1,8 @@
 package practicumopdracht.views;
 
-import javafx.stage.Stage;
+import javafx.scene.Scene;
 
-interface View {
-    void getRoot(Stage stage); // interface method (does not have a body)
+public abstract class View {
+
+    public abstract Scene getRoot();
 }

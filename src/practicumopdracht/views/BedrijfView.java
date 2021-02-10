@@ -13,9 +13,9 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
-public class BedrijfView implements View {
+public class BedrijfView extends View {
     @Override
-    public void getRoot(Stage stage) {
+    public Scene getRoot() {
 
         VBox rootVbox = new VBox();
         HBox topForm = new HBox();
@@ -76,6 +76,24 @@ public class BedrijfView implements View {
         listView.getItems().add("Item 1");
         listView.getItems().add("Item 2");
         listView.getItems().add("Item 3");
+        listView.getItems().add("Item 1");
+        listView.getItems().add("Item 2");
+        listView.getItems().add("Item 3");
+        listView.getItems().add("Item 1");
+        listView.getItems().add("Item 2");
+        listView.getItems().add("Item 3");
+        listView.getItems().add("Item 1");
+        listView.getItems().add("Item 2");
+        listView.getItems().add("Item 3");
+        listView.getItems().add("Item 1");
+        listView.getItems().add("Item 2");
+        listView.getItems().add("Item 3");
+        listView.getItems().add("Item 1");
+        listView.getItems().add("Item 2");
+        listView.getItems().add("Item 3");
+        listView.getItems().add("Item 1");
+        listView.getItems().add("Item 2");
+        listView.getItems().add("Item 3");
 
         topForm.getChildren().add(grid);
         listView.setPrefWidth(640);
@@ -95,7 +113,6 @@ public class BedrijfView implements View {
         // brining everything thogether
         rootVbox.getChildren().addAll(MenuvBox, topForm, actions, list, bottomActions);
 
-        Scene scene = new Scene(rootVbox);
-        stage.setScene(scene);
+        return new Scene(rootVbox);
     }
 }

@@ -5,12 +5,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class PersoonView implements View {
+public class PersoonView extends View {
     @Override
-    public void getRoot(Stage stage) {
+    public Scene getRoot() {
         VBox vBox = new VBox(new Label("PersoonView"));
-        Scene scene = new Scene(vBox);
-
-        stage.setScene(scene);
+        return new Scene(vBox);
     }
 }

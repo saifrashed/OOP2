@@ -19,11 +19,13 @@ public class MainApplication extends Application {
             return;
         }
 
-
         BedrijfView bedrijfView = new BedrijfView();
         PersoonView persoonView = new PersoonView();
 
-        bedrijfView.getRoot(stage);
+
+        stage.setScene(bedrijfView.getRoot());
+
+
 
         stage.setTitle(this.TITLE);
         stage.setWidth(this.WIDTH);
