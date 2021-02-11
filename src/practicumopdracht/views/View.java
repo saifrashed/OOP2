@@ -1,8 +1,8 @@
 package practicumopdracht.views;
 
-import javafx.scene.Scene;
+import javafx.scene.Parent;
 
 public abstract class View {
-
-    public abstract Scene getRoot();
+    public abstract Parent getRoot();
 }
+

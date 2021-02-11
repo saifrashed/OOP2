@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -14,10 +14,10 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
 public class BedrijfView extends View {
-    @Override
-    public Scene getRoot() {
 
-        VBox rootVbox = new VBox();
+    private VBox rootVbox = new VBox();
+
+    public BedrijfView() {
         HBox topForm = new HBox();
         HBox actions = new HBox();
         HBox bottomActions = new HBox();
@@ -111,8 +111,12 @@ public class BedrijfView extends View {
         bottomActions.getChildren().addAll(btn1, btn2, btn3);
 
         // brining everything thogether
-        rootVbox.getChildren().addAll(MenuvBox, topForm, actions, list, bottomActions);
-
-        return new Scene(rootVbox);
+        this.rootVbox.getChildren().addAll(MenuvBox, topForm, actions, list, bottomActions);
     }
+
+    @Override
+    public Parent getRoot() {
+        return rootVbox;
+    }
+
 }
