@@ -7,6 +7,7 @@ import javafx.scene.layout.*;
 import javafx.scene.Parent;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import practicumopdracht.models.Bedrijf;
 
 public class BedrijfView extends View {
 
@@ -23,10 +24,13 @@ public class BedrijfView extends View {
     // bottom actions
     private Button nieuwBtn = new Button("Nieuw");
     private Button deleteBtn = new Button("Verwijderen");
-    private Button detailsBtn = new Button("Bekijk details");
+    private Button getReadBtn = new Button("Bekijk details");
     // form
     private Label bedrijfNaam = new Label("Bedrijfs naam:");
     private TextField bedrijfNaamField = new TextField();
+    // alert
+    private Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
 
     /**
      * Constructor
@@ -39,8 +43,6 @@ public class BedrijfView extends View {
      * View init
      */
     private void initializeRoot() {
-
-
         // menu bar
         MenuBar menuBar = new MenuBar();
         Menu menu1 = new Menu("Bestand");
@@ -58,16 +60,17 @@ public class BedrijfView extends View {
 
         // actions sectie
         submitBtn.setPrefWidth(640);
-        this.actions.getChildren().addAll(submitBtn);
+        this.actions.getChildren().add(submitBtn);
 
         // list sectie
         this.listView.setPrefWidth(640);
+        this.list.getChildren().add(this.listView);
 
         // bottom controls sectie
         this.nieuwBtn.setPrefWidth(213);
         this.deleteBtn.setPrefWidth(213);
-        this.detailsBtn.setPrefWidth(213);
-        this.bottomActions.getChildren().addAll(this.nieuwBtn, this.deleteBtn, this.detailsBtn);
+        this.getReadBtn.setPrefWidth(213);
+        this.bottomActions.getChildren().addAll(this.nieuwBtn, this.deleteBtn, this.getReadBtn);
 
         // root box sectie
         this.rootVbox.getChildren().addAll(MenuvBox, this.topForm, this.actions, this.list, this.bottomActions);
@@ -79,6 +82,26 @@ public class BedrijfView extends View {
 
     public Button getSubmitBtn() {
         return submitBtn;
+    }
+
+    public Button getDeleteBtn() {
+        return deleteBtn;
+    }
+
+    public Button getReadBtn() {
+        return getReadBtn;
+    }
+
+    public Button getNieuwBtn() {
+        return nieuwBtn;
+    }
+
+    public TextField getBedrijfNaamField() {
+        return bedrijfNaamField;
+    }
+
+    public Alert getAlert() {
+        return alert;
     }
 
     @Override
