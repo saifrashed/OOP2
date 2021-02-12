@@ -3,6 +3,7 @@ package practicumopdracht;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import practicumopdracht.controllers.BedrijfController;
 import practicumopdracht.views.BedrijfView;
 import practicumopdracht.views.PersoonView;
 
@@ -20,11 +21,10 @@ public class MainApplication extends Application {
             return;
         }
 
-        BedrijfView bedrijfView = new BedrijfView();
-        PersoonView persoonView = new PersoonView();
+        BedrijfController bedrijf = new BedrijfController();
 
 
-        stage.setScene(new Scene(persoonView.getRoot()));
+        stage.setScene(new Scene(bedrijf.getView().getRoot()));
 
 
         stage.setTitle(this.TITLE);

@@ -15,6 +15,10 @@ public class PersoonView extends View {
     private VBox rootVbox = new VBox();
 
     public PersoonView() {
+        this.initializeRoot();
+    }
+
+    private void initializeRoot() {
         HBox topForm = new HBox();
         HBox actions = new HBox();
         HBox bottomActions = new HBox();
@@ -38,14 +42,14 @@ public class PersoonView extends View {
 
         // username
         Label userName = new Label("User Name:");
-        grid.add(userName, 0, 0, 20, 1 );
+        grid.add(userName, 0, 0, 20, 1);
 
         TextField userTextField = new TextField();
         grid.add(userTextField, 15, 0, 100, 1);
 
 
         Label userPw = new Label("User Name:");
-        grid.add(userPw, 0, 1, 20, 1 );
+        grid.add(userPw, 0, 1, 20, 1);
 
         TextField userPwField = new TextField();
         grid.add(userPwField, 15, 1, 100, 1);

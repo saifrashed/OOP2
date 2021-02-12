@@ -2,116 +2,83 @@ package practicumopdracht.views;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.stage.Stage;
 
 public class BedrijfView extends View {
 
+    // app sections
     private VBox rootVbox = new VBox();
+    private HBox topForm = new HBox();
+    private HBox actions = new HBox();
+    private HBox bottomActions = new HBox();
+    // list
+    private HBox list = new HBox();
+    private ListView listView = new ListView();
+    // action buttons
+    private Button submitBtn = new Button("Opslaan");
+    // bottom actions
+    private Button nieuwBtn = new Button("Nieuw");
+    private Button deleteBtn = new Button("Verwijderen");
+    private Button detailsBtn = new Button("Bekijk details");
+    // form
+    private Label bedrijfNaam = new Label("Bedrijfs naam:");
+    private TextField bedrijfNaamField = new TextField();
 
+    /**
+     * Constructor
+     */
     public BedrijfView() {
-        HBox topForm = new HBox();
-        HBox actions = new HBox();
-        HBox bottomActions = new HBox();
+        this.initializeRoot();
+    }
+
+    /**
+     * View init
+     */
+    private void initializeRoot() {
 
 
         // menu bar
         MenuBar menuBar = new MenuBar();
         Menu menu1 = new Menu("Bestand");
         Menu menu2 = new Menu("Sorteren");
+
         menuBar.getMenus().addAll(menu1, menu2);
         VBox MenuvBox = new VBox(menuBar);
 
+        // top form sectie
+        this.bedrijfNaam.setPrefWidth(90);
+        this.bedrijfNaamField.setPrefWidth(530);
+        this.topForm.setPadding(new Insets(25, 10, 25, 10));
+        this.topForm.setAlignment(Pos.CENTER_LEFT);
+        this.topForm.getChildren().addAll(bedrijfNaam, bedrijfNaamField);
 
-        // start form
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(5);
-        grid.setVgap(5);
-        grid.setPadding(new Insets(25, 25, 25, 25));
-
-
-        ColumnConstraints col1Constraints = new ColumnConstraints();
-        col1Constraints.setPercentWidth(25);
-        ColumnConstraints col2Constraints = new ColumnConstraints();
-        col2Constraints.setPercentWidth(5);
-        ColumnConstraints col3Constraints = new ColumnConstraints();
-        col3Constraints.setPercentWidth(70);
-        grid.getColumnConstraints().addAll(col1Constraints, col2Constraints, col3Constraints);
-
-
-        // username
-        Label userName = new Label("User Name:");
-        grid.add(userName, 0, 0, 20, 1 );
-
-        TextField userTextField = new TextField();
-        grid.add(userTextField, 15, 0, 100, 1);
-
-
-        Label userPw = new Label("User Name:");
-        grid.add(userPw, 0, 1, 20, 1 );
-
-        TextField userPwField = new TextField();
-        grid.add(userPwField, 15, 1, 100, 1);
-
-        // end form
-
-        // submit
-        Button submitBtn = new Button("Opslaan");
+        // actions sectie
         submitBtn.setPrefWidth(640);
-        actions.getChildren().addAll(submitBtn);
+        this.actions.getChildren().addAll(submitBtn);
 
-        // list
-        HBox list = new HBox();
-        ListView listView = new ListView();
+        // list sectie
+        this.listView.setPrefWidth(640);
 
-        listView.getItems().add("Item 1");
-        listView.getItems().add("Item 2");
-        listView.getItems().add("Item 3");
-        listView.getItems().add("Item 1");
-        listView.getItems().add("Item 2");
-        listView.getItems().add("Item 3");
-        listView.getItems().add("Item 1");
-        listView.getItems().add("Item 2");
-        listView.getItems().add("Item 3");
-        listView.getItems().add("Item 1");
-        listView.getItems().add("Item 2");
-        listView.getItems().add("Item 3");
-        listView.getItems().add("Item 1");
-        listView.getItems().add("Item 2");
-        listView.getItems().add("Item 3");
-        listView.getItems().add("Item 1");
-        listView.getItems().add("Item 2");
-        listView.getItems().add("Item 3");
-        listView.getItems().add("Item 1");
-        listView.getItems().add("Item 2");
-        listView.getItems().add("Item 3");
+        // bottom controls sectie
+        this.nieuwBtn.setPrefWidth(213);
+        this.deleteBtn.setPrefWidth(213);
+        this.detailsBtn.setPrefWidth(213);
+        this.bottomActions.getChildren().addAll(this.nieuwBtn, this.deleteBtn, this.detailsBtn);
 
-        topForm.getChildren().add(grid);
-        listView.setPrefWidth(640);
-        list.getChildren().add(listView);
+        // root box sectie
+        this.rootVbox.getChildren().addAll(MenuvBox, this.topForm, this.actions, this.list, this.bottomActions);
+    }
 
-        // bottom actions
-        Button btn1 = new Button("Nieuw");
-        Button btn2 = new Button("Verwijderen");
-        Button btn3 = new Button("Bekijk details");
+    public ListView getListView() {
+        return listView;
+    }
 
-        btn1.setPrefWidth(213);
-        btn2.setPrefWidth(213);
-        btn3.setPrefWidth(213);
-
-        bottomActions.getChildren().addAll(btn1, btn2, btn3);
-
-        // brining everything thogether
-        this.rootVbox.getChildren().addAll(MenuvBox, topForm, actions, list, bottomActions);
+    public Button getSubmitBtn() {
+        return submitBtn;
     }
 
     @Override
