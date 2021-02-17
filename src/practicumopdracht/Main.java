@@ -8,14 +8,14 @@ public class Main {
 
     public static String studentNaam = "Saif Rashed";
     public static String studentNummer = "500852919";
-    private static boolean jaIkAccepteer = true;
+    private static final boolean jaIkAccepteer = true;
 
     public static boolean launchedFromMain;
 
     public static void main(String[] args) {
         launchedFromMain = true;
 
-        if(!jaIkAccepteer) {
+        if (!jaIkAccepteer) {
             showTegridy();
 
             return;
@@ -32,15 +32,15 @@ public class Main {
         System.out.println("---");
 
         String integriteitsVerklaring =
-            "Ik verklaar naar eer en geweten dat ik deze practicumopdracht zelf zal maken en geen plagiaat zal plegen " +
-            "door code van anderen over te nemen.\n\n" +
+                "Ik verklaar naar eer en geweten dat ik deze practicumopdracht zelf zal maken en geen plagiaat zal plegen " +
+                        "door code van anderen over te nemen.\n\n" +
 
-            "Ik ben me ervan bewust dat:\n"+
-            "\t- Er (geautomatiseerd) op fraude wordt gescanned\n" +
-            "\t- Verdachte situaties worden gemeld aan de examencommissie\n" +
-            "\t- Fraude kan leiden tot het ongeldig verklaren van deze practicumopdracht voor alle studenten\n\n" +
+                        "Ik ben me ervan bewust dat:\n" +
+                        "\t- Er (geautomatiseerd) op fraude wordt gescanned\n" +
+                        "\t- Verdachte situaties worden gemeld aan de examencommissie\n" +
+                        "\t- Fraude kan leiden tot het ongeldig verklaren van deze practicumopdracht voor alle studenten\n\n" +
 
-            "Door 'jaIkAccepteer' in de Main-class op 'true' te zetten, onderteken ik deze verklaring.";
+                        "Door 'jaIkAccepteer' in de Main-class op 'true' te zetten, onderteken ik deze verklaring.";
 
         System.out.println(integriteitsVerklaring);
     }

@@ -9,31 +9,55 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import practicumopdracht.models.Bedrijf;
 
+/**
+ * Class BedrijfView
+ *
+ * Creeërd een view voor bedrijven waarop
+ * verschillende handelingen op verricht
+ * kunnen worden.
+ */
 public class BedrijfView extends View {
 
-    // app sections
-    private VBox rootVbox = new VBox();
-    private HBox topForm = new HBox();
-    private HBox actions = new HBox();
-    private HBox bottomActions = new HBox();
-    // list
-    private HBox list = new HBox();
-    private ListView listView = new ListView();
-    // action buttons
-    private Button submitBtn = new Button("Opslaan");
-    // bottom actions
-    private Button nieuwBtn = new Button("Nieuw");
-    private Button deleteBtn = new Button("Verwijderen");
-    private Button getReadBtn = new Button("Bekijk details");
-    // form
-    private Label bedrijfNaam = new Label("Bedrijfs naam:");
-    private TextField bedrijfNaamField = new TextField();
-    // alert
-    private Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    /**
+     * Essentiële container nodes
+     */
+    private final VBox rootVbox = new VBox();
+    private final HBox topForm = new HBox();
+    private final HBox actions = new HBox();
+    private final HBox bottomActions = new HBox();
+
+    /**
+     * Lijst nodes
+     */
+    private final HBox list = new HBox();
+    private final ListView<Bedrijf> listView = new ListView();
+
+    /**
+     * Action button nodes
+     */
+    private final Button submitBtn = new Button("Opslaan");
+
+    /**
+     * Onderzijde knoppen console nodes
+     */
+    private final Button nieuwBtn = new Button("Nieuw");
+    private final Button deleteBtn = new Button("Verwijderen");
+    private final Button getReadBtn = new Button("Bekijk details");
+
+    /**
+     * Formulier nodes
+     */
+    private final Label bedrijfNaam = new Label("Bedrijfs naam:");
+    private final TextField bedrijfNaamField = new TextField();
+
+    /**
+     * Melding nodes
+     */
+    private final Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
 
     /**
-     * Constructor
+     * Constructor BedrijfView
      */
     public BedrijfView() {
         this.initializeRoot();
@@ -76,34 +100,64 @@ public class BedrijfView extends View {
         this.rootVbox.getChildren().addAll(MenuvBox, this.topForm, this.actions, this.list, this.bottomActions);
     }
 
+    /**
+     * Haalt lijst op
+     * @return ListView Node
+     */
     public ListView getListView() {
         return listView;
     }
 
+    /**
+     * Haalt opslaan knop op
+     * @return Button Node
+     */
     public Button getSubmitBtn() {
         return submitBtn;
     }
 
+    /**
+     * Haalt verwijder knop op
+     * @return Button Node
+     */
     public Button getDeleteBtn() {
         return deleteBtn;
     }
 
+    /**
+     * Haalt Meer lezen knop op
+     * @return Button Node
+     */
     public Button getReadBtn() {
         return getReadBtn;
     }
 
+    /**
+     * Haalt Nieuw knop op
+     * @return Button Node
+     */
     public Button getNieuwBtn() {
         return nieuwBtn;
     }
 
+    /**
+     * Haalt bedrijf tekstveld op
+     * @return TextFieLD Node
+     */
     public TextField getBedrijfNaamField() {
         return bedrijfNaamField;
     }
 
-    public Alert getAlert() {
-        return alert;
-    }
+    /**
+     * Haalt alert op
+     * @return alert Node
+     */
+    public Alert getAlert() { return alert; }
 
+    /**
+     * Haalt de view op
+     * @return Parent node
+     */
     @Override
     public Parent getRoot() {
         return rootVbox;

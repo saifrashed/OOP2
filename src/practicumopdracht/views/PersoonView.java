@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 
 public class PersoonView extends View {
 
-    private VBox rootVbox = new VBox();
+    private final VBox rootVbox = new VBox();
 
     public PersoonView() {
         this.initializeRoot();

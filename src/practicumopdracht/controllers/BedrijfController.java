@@ -1,21 +1,31 @@
 package practicumopdracht.controllers;
 
+import javafx.scene.Parent;
 import practicumopdracht.models.Bedrijf;
 import practicumopdracht.views.BedrijfView;
+
 import java.util.ArrayList;
 
 
 /**
  * Bedrijf Controller
+ * <p>
+ * In de controller worden de model en view
+ * samengebracht om vervolgens business
+ * logica toe te passen.
  */
-public class BedrijfController {
+public class BedrijfController extends Controller {
 
-    // essentials
-    private BedrijfView view;
+    /**
+     * Model & View declaraties
+     */
+    private final BedrijfView view;
     private Bedrijf bedrijf;
-    private ArrayList<Bedrijf> bedrijven = new ArrayList<>();
+    private final ArrayList<Bedrijf> bedrijven = new ArrayList<>();
 
-    // commandos
+    /**
+     * Verschillende commando's binnen deze controller
+     */
     private static final String CREATE_BEDRIJF = "create";
     private static final String DELETE_BEDRIJF = "delete";
     private static final String UPDATE_BEDRIJF = "update";
@@ -37,6 +47,7 @@ public class BedrijfController {
 
     /**
      * Regelt handelingen binnen de bedrijf applicatie
+     *
      * @param command de te verrichtte handeling
      */
     private void handleButtonClick(String command) {
@@ -72,11 +83,7 @@ public class BedrijfController {
             bedrijven.add(new Bedrijf(view.getBedrijfNaamField().getText()));
             view.getListView().getItems().add(new Bedrijf(view.getBedrijfNaamField().getText()).getNaam());
         } else {
-            view.getAlert().setTitle("Melding");
-            view.getAlert().setHeaderText("Oops, er ging wat mis.");
-            view.getAlert().setContentText("Er zijn een aantal velden leeg. Vul deze in.");
-
-            view.getAlert().showAndWait();
+            this.displayAlert("Er zijn een aantal velden leeg. Vul deze in.");
         }
     }
 
@@ -101,11 +108,7 @@ public class BedrijfController {
         if (selectedIndex >= 0) {
             view.getListView().getItems().set(selectedIndex, bedrijfsNaamInput);
         } else {
-            view.getAlert().setTitle("Melding");
-            view.getAlert().setHeaderText("Oops, er ging wat mis.");
-            view.getAlert().setContentText("U hebt geen bedrijf geselecteerd");
-
-            view.getAlert().showAndWait();
+            this.displayAlert("U hebt geen bedrijf geselecteerd");
         }
     }
 
@@ -113,10 +116,7 @@ public class BedrijfController {
      * Uitlezen Bedrijf business logic
      */
     private void readBedrijfView() {
-        view.getAlert().setTitle("Melding");
-        view.getAlert().setHeaderText("Oops, er ging wat mis.");
-        view.getAlert().setContentText("Dit scherm is nog niet gebouwd");
-        view.getAlert().showAndWait();
+        this.displayAlert("Dit scherm is nog niet gebouwd");
     }
 
     /**
@@ -130,9 +130,25 @@ public class BedrijfController {
     }
 
     /**
-     * Bedrijf root
+     * Weergeven van een melding
+     *
+     * @param message Het bericht dat in de melding staat
      */
-    public BedrijfView getView() {
-        return view;
+    private void displayAlert(String message) {
+        view.getAlert().setTitle("Melding");
+        view.getAlert().setHeaderText("Oops, er ging wat mis.");
+        view.getAlert().setContentText(message);
+        view.getAlert().showAndWait();
+    }
+
+    /**
+     * Geeft view van Bedrijf terug
+     * om weergegeven te worden in de applicatie
+     *
+     * @return Parent node
+     */
+    @Override
+    public Parent getView() {
+        return view.getRoot();
     }
 }
