@@ -3,10 +3,16 @@ package practicumopdracht.controllers;
 import javafx.scene.Parent;
 
 /**
- * Abstract Class Controller
+ * Abstract class Controller
  *
- * Bevat getView abstract method
+ * Bevat abstracte methodes voor Children Controllers
  */
 public abstract class Controller {
+
+    /**
+     * Geeft Parent node terug om gebruikt te worden in de stage
+     *
+     * @return Parent node
+     */
     public abstract Parent getView();
 }

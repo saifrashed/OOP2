@@ -11,7 +11,7 @@ import practicumopdracht.models.Bedrijf;
 
 /**
  * Class BedrijfView
- *
+ * <p>
  * Creeërd een view voor bedrijven waarop
  * verschillende handelingen op verricht
  * kunnen worden.
@@ -22,7 +22,7 @@ public class BedrijfView extends View {
      * Essentiële container nodes
      */
     private final VBox rootVbox = new VBox();
-    private final HBox topForm = new HBox();
+    private final VBox topForm = new VBox();
     private final HBox actions = new HBox();
     private final HBox bottomActions = new HBox();
 
@@ -47,8 +47,13 @@ public class BedrijfView extends View {
     /**
      * Formulier nodes
      */
+    private final HBox bedrijfNaamBox = new HBox();
     private final Label bedrijfNaam = new Label("Bedrijfs naam:");
     private final TextField bedrijfNaamField = new TextField();
+
+    private final HBox omschrijvingBox = new HBox();
+    private final Label omschrijving = new Label("Bedrijf Omschrijving:");
+    private final TextArea omschrijvingField = new TextArea();
 
     /**
      * Melding nodes
@@ -76,11 +81,17 @@ public class BedrijfView extends View {
         VBox MenuvBox = new VBox(menuBar);
 
         // top form sectie
-        this.bedrijfNaam.setPrefWidth(90);
-        this.bedrijfNaamField.setPrefWidth(530);
+        this.bedrijfNaam.setPrefWidth(120);
+        this.bedrijfNaamField.setPrefWidth(500);
+        this.bedrijfNaamBox.getChildren().addAll(this.bedrijfNaam, this.bedrijfNaamField);
+
+        this.omschrijving.setPrefWidth(120);
+        this.omschrijvingField.setPrefWidth(500);
+        this.omschrijvingBox.getChildren().addAll(this.omschrijving, this.omschrijvingField);
+
         this.topForm.setPadding(new Insets(25, 10, 25, 10));
         this.topForm.setAlignment(Pos.CENTER_LEFT);
-        this.topForm.getChildren().addAll(bedrijfNaam, bedrijfNaamField);
+        this.topForm.getChildren().addAll(this.bedrijfNaamBox, this.omschrijvingBox);
 
         // actions sectie
         submitBtn.setPrefWidth(640);
@@ -102,6 +113,7 @@ public class BedrijfView extends View {
 
     /**
      * Haalt lijst op
+     *
      * @return ListView Node
      */
     public ListView getListView() {
@@ -110,6 +122,7 @@ public class BedrijfView extends View {
 
     /**
      * Haalt opslaan knop op
+     *
      * @return Button Node
      */
     public Button getSubmitBtn() {
@@ -118,6 +131,7 @@ public class BedrijfView extends View {
 
     /**
      * Haalt verwijder knop op
+     *
      * @return Button Node
      */
     public Button getDeleteBtn() {
@@ -126,6 +140,7 @@ public class BedrijfView extends View {
 
     /**
      * Haalt Meer lezen knop op
+     *
      * @return Button Node
      */
     public Button getReadBtn() {
@@ -134,6 +149,7 @@ public class BedrijfView extends View {
 
     /**
      * Haalt Nieuw knop op
+     *
      * @return Button Node
      */
     public Button getNieuwBtn() {
@@ -142,20 +158,29 @@ public class BedrijfView extends View {
 
     /**
      * Haalt bedrijf tekstveld op
+     *
      * @return TextFieLD Node
      */
     public TextField getBedrijfNaamField() {
         return bedrijfNaamField;
     }
 
+    public TextArea getOmschrijvingField() {
+        return omschrijvingField;
+    }
+
     /**
      * Haalt alert op
+     *
      * @return alert Node
      */
-    public Alert getAlert() { return alert; }
+    public Alert getAlert() {
+        return alert;
+    }
 
     /**
      * Haalt de view op
+     *
      * @return Parent node
      */
     @Override

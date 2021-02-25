@@ -4,25 +4,29 @@ import java.util.ArrayList;
 
 /**
  * Class Bedrijf
- *
+ * <p>
  * Hier wordt de data voor een bedrijf
  * toegevoegd, aangepast, verwijderd
  * of uitgelezen
  */
 public class Bedrijf {
     private String naam;
+    private String omschrijving;
     private final ArrayList<Persoon> personen = new ArrayList<Persoon>();
 
     /**
      * Constructor Bedrijf
+     *
      * @param naam Naam van het bedrijf
      */
-    public Bedrijf(String naam) {
+    public Bedrijf(String naam, String omschrijving) {
         this.naam = naam;
+        this.omschrijving = omschrijving;
     }
 
     /**
      * Haalt naam op van bedrijf
+     *
      * @return
      */
     public String getNaam() {
@@ -31,14 +35,35 @@ public class Bedrijf {
 
     /**
      * Stelt naam in van bedrijf
+     *
      * @param naam Naam van het bedrijf
      */
     public void setNaam(String naam) {
         this.naam = naam;
     }
 
+
+    /**
+     * Haalt omschrijving op van bedrijf
+     *
+     * @return omschrijving van bedrijf
+     */
+    public String getOmschrijving() {
+        return omschrijving;
+    }
+
+    /**
+     * Stelt omschrijving in van bedrijf
+     *
+     * @param omschrijving omschrijving van het bedrijf
+     */
+    public void setOmschrijving(String omschrijving) {
+        this.omschrijving = omschrijving;
+    }
+
     /**
      * Haalt personen op van bedrijf
+     *
      * @return ArrayList Personen
      */
     public ArrayList<Persoon> getPersonen() {
@@ -47,6 +72,7 @@ public class Bedrijf {
 
     /**
      * Voegt persoon toe aan bedrijf
+     *
      * @param persoon persoon en bijhorende gegevens
      */
     public void addPersonen(Persoon persoon) {
@@ -55,13 +81,12 @@ public class Bedrijf {
 
     /**
      * Geeft een string representatie weer
+     *
      * @return Een string met informatie over dit klasse
      */
     @Override
     public String toString() {
-        return "Bedrijf{" +
-                "naam='" + naam + '\'' +
-                '}';
+        return this.naam + "\n" + this.omschrijving;
     }
 
 }

@@ -1,6 +1,7 @@
 package practicumopdracht.controllers;
 
 import javafx.scene.Parent;
+import practicumopdracht.MainApplication;
 import practicumopdracht.models.Bedrijf;
 import practicumopdracht.views.BedrijfView;
 
@@ -19,7 +20,7 @@ public class BedrijfController extends Controller {
     /**
      * Model & View declaraties
      */
-    private final BedrijfView view;
+    private BedrijfView view;
     private Bedrijf bedrijf;
     private final ArrayList<Bedrijf> bedrijven = new ArrayList<>();
 
@@ -38,11 +39,18 @@ public class BedrijfController extends Controller {
     public BedrijfController() {
         view = new BedrijfView();
 
+
         view.getSubmitBtn().setOnAction(e -> handleButtonClick(UPDATE_BEDRIJF));
         view.getDeleteBtn().setOnAction(e -> handleButtonClick(DELETE_BEDRIJF));
         view.getNieuwBtn().setOnAction(e -> handleButtonClick(CREATE_BEDRIJF));
         view.getReadBtn().setOnAction(e -> handleButtonClick(READ_BEDRIJF));
-        view.getListView().setOnMouseClicked(e -> handleButtonClick(SELECT_BEDRIJF));
+        view.getListView().setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2) {
+                handleButtonClick(READ_BEDRIJF);
+            } else {
+                handleButtonClick(SELECT_BEDRIJF);
+            }
+        });
     }
 
     /**
@@ -76,26 +84,29 @@ public class BedrijfController extends Controller {
 
 
     /**
-     * Create Bedrijf business logic
+     * Toevoegen Bedrijf business logic
      */
     private void createBedrijfView() {
         if (!view.getBedrijfNaamField().getText().isEmpty()) {
-            bedrijven.add(new Bedrijf(view.getBedrijfNaamField().getText()));
-            view.getListView().getItems().add(new Bedrijf(view.getBedrijfNaamField().getText()).getNaam());
+            bedrijven.add(new Bedrijf(view.getBedrijfNaamField().getText(), view.getOmschrijvingField().getText()));
+            view.getListView().getItems().add(bedrijven.get(bedrijven.size() - 1).toString());
         } else {
             this.displayAlert("Er zijn een aantal velden leeg. Vul deze in.");
         }
     }
 
     /**
-     * Create Bedrijf business logic
+     * Verwijderen Bedrijf business logic
      */
     private void deleteBedrijfView() {
-
         int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
 
-        bedrijven.remove(selectedIndex);
-        view.getListView().getItems().remove(selectedIndex);
+        if (selectedIndex != -1) {
+            bedrijven.remove(selectedIndex);
+            view.getListView().getItems().remove(selectedIndex);
+        } else {
+            this.displayAlert("U hebt geen bedrijf geselecteerd");
+        }
     }
 
     /**
@@ -105,7 +116,7 @@ public class BedrijfController extends Controller {
         int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
         String bedrijfsNaamInput = view.getBedrijfNaamField().getText();
 
-        if (selectedIndex >= 0) {
+        if (selectedIndex != -1) {
             view.getListView().getItems().set(selectedIndex, bedrijfsNaamInput);
         } else {
             this.displayAlert("U hebt geen bedrijf geselecteerd");
@@ -113,10 +124,11 @@ public class BedrijfController extends Controller {
     }
 
     /**
-     * Uitlezen Bedrijf business logic
+     * Uitlezen en navigeren naar detail pagina business logic
      */
     private void readBedrijfView() {
-        this.displayAlert("Dit scherm is nog niet gebouwd");
+        int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
+        MainApplication.switchController(true);
     }
 
     /**
@@ -124,9 +136,9 @@ public class BedrijfController extends Controller {
      */
     private void selectBedrijfView() {
         int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
-        Object selectedValue = view.getListView().getItems().get(selectedIndex);
 
-        view.getBedrijfNaamField().setText(selectedValue.toString());
+        view.getBedrijfNaamField().setText(bedrijven.get(selectedIndex).getNaam());
+        view.getOmschrijvingField().setText(bedrijven.get(selectedIndex).getOmschrijving());
     }
 
     /**
