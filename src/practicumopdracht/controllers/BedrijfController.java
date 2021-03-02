@@ -39,7 +39,6 @@ public class BedrijfController extends Controller {
     public BedrijfController() {
         view = new BedrijfView();
 
-
         view.getSubmitBtn().setOnAction(e -> handleButtonClick(UPDATE_BEDRIJF));
         view.getDeleteBtn().setOnAction(e -> handleButtonClick(DELETE_BEDRIJF));
         view.getNieuwBtn().setOnAction(e -> handleButtonClick(CREATE_BEDRIJF));
@@ -127,8 +126,8 @@ public class BedrijfController extends Controller {
      * Uitlezen en navigeren naar detail pagina business logic
      */
     private void readBedrijfView() {
-        int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
-        MainApplication.switchController(true);
+        PersoonController persoon = new PersoonController();
+        MainApplication.switchController(persoon);
     }
 
     /**

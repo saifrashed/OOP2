@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import practicumopdracht.controllers.BedrijfController;
+import practicumopdracht.controllers.Controller;
 import practicumopdracht.controllers.PersoonController;
 
 public class MainApplication extends Application {
@@ -23,7 +24,10 @@ public class MainApplication extends Application {
         }
 
         MainApplication.primaryStage = stage;
-        MainApplication.switchController(false);
+
+        BedrijfController bedrijf = new BedrijfController();
+
+        MainApplication.switchController(bedrijf);
 
         primaryStage.setTitle(this.TITLE);
         primaryStage.setWidth(this.WIDTH);
@@ -33,16 +37,8 @@ public class MainApplication extends Application {
 
     /**
      * Handles Switching of controllers
-     * @param isDetail Checks if controller is a detailpage
      */
-    public static void switchController(boolean isDetail) {
-        BedrijfController bedrijf = new BedrijfController();
-        PersoonController persoon = new PersoonController();
-
-        if (isDetail) {
-            MainApplication.primaryStage.setScene(new Scene(persoon.getView()));
-        } else {
-            MainApplication.primaryStage.setScene(new Scene(bedrijf.getView()));
-        }
+    public static void switchController(Controller controller) {
+        MainApplication.primaryStage.setScene(new Scene(controller.getView()));
     }
 }

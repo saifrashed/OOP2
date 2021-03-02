@@ -100,7 +100,8 @@ public class PersoonController extends Controller {
      * Uitlezen en navigeren naar detail pagina business logic
      */
     public void returnPersoonView() {
-        MainApplication.switchController(false);
+        BedrijfController bedrijf = new BedrijfController();
+        MainApplication.switchController(bedrijf);
     }
 
     public void selectPersoonView() {
