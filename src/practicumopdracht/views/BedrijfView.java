@@ -1,5 +1,6 @@
 package practicumopdracht.views;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -8,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import practicumopdracht.models.Bedrijf;
+
+import java.util.List;
 
 /**
  * Class BedrijfView
@@ -26,6 +29,18 @@ public class BedrijfView extends View {
     private final HBox actions = new HBox();
     private final HBox bottomActions = new HBox();
 
+//    /**
+//     * Menu bar
+//     */
+//    private MenuBar menuBar = new MenuBar();
+//    private Menu fileItem = new Menu("Bestand");
+//    private MenuItem fileSave = new MenuItem("Opslaan");
+//    private MenuItem fileLoad = new MenuItem("Laden");
+//    private MenuItem fileClose = new MenuItem("Afsluiten");
+//
+//
+//    private Menu sortItem = new Menu("Sorteren");
+
     /**
      * Lijst nodes
      */
@@ -42,16 +57,14 @@ public class BedrijfView extends View {
      */
     private final Button nieuwBtn = new Button("Nieuw");
     private final Button deleteBtn = new Button("Verwijderen");
-    private final Button getReadBtn = new Button("Bekijk details");
+    private final Button readBtn = new Button("Bekijk details");
 
     /**
      * Formulier nodes
      */
-    private final HBox bedrijfNaamBox = new HBox();
     private final Label bedrijfNaam = new Label("Bedrijfs naam:");
     private final TextField bedrijfNaamField = new TextField();
 
-    private final HBox omschrijvingBox = new HBox();
     private final Label omschrijving = new Label("Bedrijf Omschrijving:");
     private final TextArea omschrijvingField = new TextArea();
 
@@ -73,43 +86,67 @@ public class BedrijfView extends View {
      */
     private void initializeRoot() {
         // menu bar
-        MenuBar menuBar = new MenuBar();
-        Menu menu1 = new Menu("Bestand");
-        Menu menu2 = new Menu("Sorteren");
-
-        menuBar.getMenus().addAll(menu1, menu2);
-        VBox MenuvBox = new VBox(menuBar);
+//        fileItem.getItems().addAll(fileSave, fileLoad, fileClose);
+//        menuBar.getMenus().addAll(fileItem, sortItem);
+//        VBox MenuvBox = new VBox(menuBar);
 
         // top form sectie
+        HBox bedrijfNaamBox = new HBox();
         this.bedrijfNaam.setPrefWidth(120);
         this.bedrijfNaamField.setPrefWidth(500);
-        this.bedrijfNaamBox.getChildren().addAll(this.bedrijfNaam, this.bedrijfNaamField);
+        bedrijfNaamBox.getChildren().addAll(this.bedrijfNaam, this.bedrijfNaamField);
 
+        HBox omschrijvingBox = new HBox();
         this.omschrijving.setPrefWidth(120);
         this.omschrijvingField.setPrefWidth(500);
-        this.omschrijvingBox.getChildren().addAll(this.omschrijving, this.omschrijvingField);
+        omschrijvingBox.getChildren().addAll(this.omschrijving, this.omschrijvingField);
 
         this.topForm.setPadding(new Insets(25, 10, 25, 10));
         this.topForm.setAlignment(Pos.CENTER_LEFT);
-        this.topForm.getChildren().addAll(this.bedrijfNaamBox, this.omschrijvingBox);
+        this.topForm.getChildren().addAll(bedrijfNaamBox, omschrijvingBox);
 
         // actions sectie
-        submitBtn.setPrefWidth(640);
+        submitBtn.prefWidthProperty().bind(this.topForm.widthProperty());
         this.actions.getChildren().add(submitBtn);
 
         // list sectie
-        this.listView.setPrefWidth(640);
+        this.listView.prefWidthProperty().bind(this.list.widthProperty());
         this.list.getChildren().add(this.listView);
 
-        // bottom controls sectie
-        this.nieuwBtn.setPrefWidth(213);
-        this.deleteBtn.setPrefWidth(213);
-        this.getReadBtn.setPrefWidth(213);
-        this.bottomActions.getChildren().addAll(this.nieuwBtn, this.deleteBtn, this.getReadBtn);
+
+        // Bottom actions gridpane
+        GridPane gp = new GridPane();
+        ColumnConstraints col0 = new ColumnConstraints();
+        ColumnConstraints col1 = new ColumnConstraints();
+        ColumnConstraints col2 = new ColumnConstraints();
+
+        col0.setPercentWidth(33);
+        col1.setPercentWidth(33);
+        col2.setPercentWidth(33);
+
+        col0.setHalignment(HPos.CENTER);
+        col1.setHalignment(HPos.CENTER);
+        col2.setHalignment(HPos.CENTER);
+
+        gp.getColumnConstraints().addAll(col0, col1, col2);
+        gp.prefWidthProperty().bind(this.bottomActions.widthProperty());
+
+        gp.add(this.nieuwBtn, 0, 0);
+        gp.add(this.deleteBtn, 1, 0);
+        gp.add(this.readBtn, 2, 0);
+
+        this.nieuwBtn.setMaxWidth(1000);
+        this.deleteBtn.setMaxWidth(1000);
+        this.readBtn.setMaxWidth(1000);
+
+        this.bottomActions.getChildren().addAll(gp);
 
         // root box sectie
-        this.rootVbox.getChildren().addAll(MenuvBox, this.topForm, this.actions, this.list, this.bottomActions);
+        this.rootVbox.getChildren().addAll(this.topForm, this.actions, this.list, this.bottomActions);
     }
+
+
+
 
     /**
      * Haalt lijst op
@@ -144,7 +181,7 @@ public class BedrijfView extends View {
      * @return Button Node
      */
     public Button getReadBtn() {
-        return getReadBtn;
+        return readBtn;
     }
 
     /**
@@ -167,6 +204,12 @@ public class BedrijfView extends View {
 
     public TextArea getOmschrijvingField() {
         return omschrijvingField;
+    }
+
+
+    public void setBedrijven(List<Bedrijf> bedrijven) {
+        this.listView.getItems().clear();
+        this.listView.getItems().addAll(bedrijven);
     }
 
     /**

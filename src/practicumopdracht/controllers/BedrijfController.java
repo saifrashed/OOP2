@@ -1,11 +1,12 @@
 package practicumopdracht.controllers;
 
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import practicumopdracht.MainApplication;
 import practicumopdracht.models.Bedrijf;
 import practicumopdracht.views.BedrijfView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -21,8 +22,6 @@ public class BedrijfController extends Controller {
      * Model & View declaraties
      */
     private BedrijfView view;
-    private Bedrijf bedrijf;
-    private final ArrayList<Bedrijf> bedrijven = new ArrayList<>();
 
     /**
      * Verschillende commando's binnen deze controller
@@ -36,8 +35,9 @@ public class BedrijfController extends Controller {
     /**
      * Constructor
      */
-    public BedrijfController() {
+    public BedrijfController(List<Bedrijf> bedrijf) {
         view = new BedrijfView();
+        view.setBedrijven(bedrijf);
 
         view.getSubmitBtn().setOnAction(e -> handleButtonClick(UPDATE_BEDRIJF));
         view.getDeleteBtn().setOnAction(e -> handleButtonClick(DELETE_BEDRIJF));
@@ -61,19 +61,19 @@ public class BedrijfController extends Controller {
         try {
             switch (command) {
                 case CREATE_BEDRIJF:
-                    this.createBedrijfView();
+                    this.createBedrijf();
                     break;
                 case DELETE_BEDRIJF:
-                    this.deleteBedrijfView();
+                    this.deleteBedrijf();
                     break;
                 case UPDATE_BEDRIJF:
-                    this.updateBedrijfView();
+                    this.updateBedrijf();
                     break;
                 case READ_BEDRIJF:
-                    this.readBedrijfView();
+                    this.readBedrijf();
                     break;
                 case SELECT_BEDRIJF:
-                    this.selectBedrijfView();
+                    this.selectBedrijf();
                     break;
             }
         } catch (Exception e) {
@@ -81,63 +81,116 @@ public class BedrijfController extends Controller {
         }
     }
 
-
     /**
      * Toevoegen Bedrijf business logic
      */
-    private void createBedrijfView() {
-        if (!view.getBedrijfNaamField().getText().isEmpty()) {
-            bedrijven.add(new Bedrijf(view.getBedrijfNaamField().getText(), view.getOmschrijvingField().getText()));
-            view.getListView().getItems().add(bedrijven.get(bedrijven.size() - 1).toString());
-        } else {
-            this.displayAlert("Er zijn een aantal velden leeg. Vul deze in.");
+    private void createBedrijf() {
+        if (validateFields()) {
+            MainApplication.getBedrijven().addOrUpdate(new Bedrijf(view.getBedrijfNaamField().getText(), view.getOmschrijvingField().getText()));
+            view.setBedrijven(MainApplication.getBedrijven().getAll());
+            clearFields();
         }
     }
 
     /**
      * Verwijderen Bedrijf business logic
      */
-    private void deleteBedrijfView() {
-        int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
+    private void deleteBedrijf() {
+        if (hasSelectedBedrijf()) {
+            int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
 
-        if (selectedIndex != -1) {
-            bedrijven.remove(selectedIndex);
-            view.getListView().getItems().remove(selectedIndex);
-        } else {
-            this.displayAlert("U hebt geen bedrijf geselecteerd");
+            MainApplication.getBedrijven().remove(MainApplication.getBedrijven().getById(selectedIndex));
+            view.setBedrijven(MainApplication.getBedrijven().getAll());
         }
     }
 
     /**
      * Aanpassen Bedrijf business logic
      */
-    private void updateBedrijfView() {
-        int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
-        String bedrijfsNaamInput = view.getBedrijfNaamField().getText();
+    private void updateBedrijf() {
+        if (validateFields()) {
+            int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
 
-        if (selectedIndex != -1) {
-            view.getListView().getItems().set(selectedIndex, bedrijfsNaamInput);
-        } else {
-            this.displayAlert("U hebt geen bedrijf geselecteerd");
+            String bedrijfsNaamInput = view.getBedrijfNaamField().getText();
+            String omschrijving = view.getOmschrijvingField().getText();
+
+            MainApplication.getBedrijven().getById(selectedIndex).setNaam(bedrijfsNaamInput);
+            MainApplication.getBedrijven().getById(selectedIndex).setOmschrijving(omschrijving);
+            view.setBedrijven(MainApplication.getBedrijven().getAll());
+            clearFields();
         }
     }
 
     /**
      * Uitlezen en navigeren naar detail pagina business logic
      */
-    private void readBedrijfView() {
-        PersoonController persoon = new PersoonController();
-        MainApplication.switchController(persoon);
+    private void readBedrijf() {
+        if (hasSelectedBedrijf()) {
+            int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
+
+            PersoonController persoon = new PersoonController(MainApplication.getBedrijven().getById(selectedIndex));
+            MainApplication.switchController(persoon);
+        } else {
+            displayAlert("Foutmelding", "U hebt geen bedrijf geselecteerd", "WARNING");
+        }
     }
 
     /**
      * Selecteren Bedrijf business logic
      */
-    private void selectBedrijfView() {
+    private void selectBedrijf() {
         int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
 
-        view.getBedrijfNaamField().setText(bedrijven.get(selectedIndex).getNaam());
-        view.getOmschrijvingField().setText(bedrijven.get(selectedIndex).getOmschrijving());
+        view.getBedrijfNaamField().setText(MainApplication.getBedrijven().getById(selectedIndex).getNaam());
+        view.getOmschrijvingField().setText(MainApplication.getBedrijven().getById(selectedIndex).getOmschrijving());
+    }
+
+
+    /**
+     * Valideren van velden en de melding weergeven
+     *
+     * @return of correct gevalideerd
+     */
+    private boolean validateFields() {
+        StringBuilder string = new StringBuilder();
+        string.append("De volgende fouten zijn gevonden: \n");
+
+        if (view.getBedrijfNaamField().getText().isBlank() || view.getOmschrijvingField().getText().isBlank()) {
+
+            if (view.getBedrijfNaamField().getText().isBlank()) {
+                string.append("- Bedrijf naam is verplicht! \n");
+            }
+
+            if (view.getOmschrijvingField().getText().isBlank()) {
+                string.append("- Bedrijf omschrijving is verplicht! \n");
+            }
+
+            displayAlert("Opslaan", string.toString(), "WARNING");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Controleert of een bedrijf is geselecteerd
+     *
+     * @return of bedrijf is geselecteerd met true of false
+     */
+    private boolean hasSelectedBedrijf() {
+        int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
+
+        if (selectedIndex != -1) {
+            return true;
+        } else {
+            displayAlert("Er ging wat mis", "U hebt geen bedrijf geselecteerd", "WARNING");
+            return false;
+        }
+    }
+
+    private void clearFields() {
+        view.getBedrijfNaamField().clear();
+        view.getOmschrijvingField().clear();
     }
 
     /**
@@ -145,9 +198,24 @@ public class BedrijfController extends Controller {
      *
      * @param message Het bericht dat in de melding staat
      */
-    private void displayAlert(String message) {
+    private void displayAlert(String title, String message, String type) {
+        switch (type) {
+            case "ERROR":
+                view.getAlert().setAlertType(Alert.AlertType.ERROR);
+                break;
+            case "WARNING":
+                view.getAlert().setAlertType(Alert.AlertType.WARNING);
+                break;
+            case "INFORMATION":
+                view.getAlert().setAlertType(Alert.AlertType.INFORMATION);
+                break;
+            case "CONFIRMATION":
+                view.getAlert().setAlertType(Alert.AlertType.CONFIRMATION);
+                break;
+        }
+
         view.getAlert().setTitle("Melding");
-        view.getAlert().setHeaderText("Oops, er ging wat mis.");
+        view.getAlert().setHeaderText(title);
         view.getAlert().setContentText(message);
         view.getAlert().showAndWait();
     }

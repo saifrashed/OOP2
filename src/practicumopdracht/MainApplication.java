@@ -2,14 +2,25 @@ package practicumopdracht;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import practicumopdracht.controllers.BedrijfController;
 import practicumopdracht.controllers.Controller;
-import practicumopdracht.controllers.PersoonController;
+import practicumopdracht.controllers.MenuController;
+import practicumopdracht.data.BedrijfDao;
+import practicumopdracht.data.PersoonDao;
+import practicumopdracht.data.TextBedrijfDao;
+import practicumopdracht.data.TextPersoonDao;
+import practicumopdracht.models.Bedrijf;
+
+import java.util.List;
 
 public class MainApplication extends Application {
 
-    private static Stage primaryStage;
+    private static BorderPane mainPane;
+
+    private static BedrijfDao bedrijf = new TextBedrijfDao();
+    private static PersoonDao persoon = new TextPersoonDao();
 
     private final String TITLE = String.format("Practicumopdracht OOP2 - %s", Main.studentNaam);
     private final int WIDTH = 640;
@@ -23,22 +34,40 @@ public class MainApplication extends Application {
             return;
         }
 
-        MainApplication.primaryStage = stage;
+        bedrijf.load();
+        persoon.load();
 
-        BedrijfController bedrijf = new BedrijfController();
+        List<Bedrijf> list = bedrijf.getAll();
 
-        MainApplication.switchController(bedrijf);
+        mainPane = new BorderPane();
 
-        primaryStage.setTitle(this.TITLE);
-        primaryStage.setWidth(this.WIDTH);
-        primaryStage.setHeight(this.HEIGHT);
-        primaryStage.show();
+        mainPane.setTop(new MenuController(stage).getView());
+
+        BedrijfController bedrijf = new BedrijfController(list);
+
+        switchController(bedrijf);
+
+        stage.setScene(new Scene(mainPane));
+
+
+        stage.setTitle(this.TITLE);
+        stage.setWidth(this.WIDTH);
+        stage.setHeight(this.HEIGHT);
+        stage.show();
     }
 
     /**
      * Handles Switching of controllers
      */
     public static void switchController(Controller controller) {
-        MainApplication.primaryStage.setScene(new Scene(controller.getView()));
+        mainPane.setCenter(controller.getView());
+    }
+
+    public static BedrijfDao getBedrijven() {
+        return bedrijf;
+    }
+
+    public static PersoonDao getPersoon() {
+        return persoon;
     }
 }

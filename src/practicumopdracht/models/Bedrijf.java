@@ -86,7 +86,15 @@ public class Bedrijf {
      */
     @Override
     public String toString() {
-        return this.naam + "\n" + this.omschrijving;
+
+        StringBuilder string = new StringBuilder();
+
+        string.append(naam);
+        string.append("\n");
+        string.append(omschrijving);
+        string.append("\n");
+
+        return string.toString();
     }
 
 }
