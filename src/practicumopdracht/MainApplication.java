@@ -7,10 +7,7 @@ import javafx.stage.Stage;
 import practicumopdracht.controllers.BedrijfController;
 import practicumopdracht.controllers.Controller;
 import practicumopdracht.controllers.MenuController;
-import practicumopdracht.data.BedrijfDao;
-import practicumopdracht.data.PersoonDao;
-import practicumopdracht.data.TextBedrijfDao;
-import practicumopdracht.data.TextPersoonDao;
+import practicumopdracht.data.*;
 import practicumopdracht.models.Bedrijf;
 
 import java.util.List;
@@ -19,8 +16,16 @@ public class MainApplication extends Application {
 
     private static BorderPane mainPane;
 
-    private static BedrijfDao bedrijf = new TextBedrijfDao();
-    private static PersoonDao persoon = new TextPersoonDao();
+//    private static BedrijfDao bedrijf = new TextBedrijfDao();
+//    private static BedrijfDao bedrijf = new FakeBedrijfDao();
+     private static BedrijfDao bedrijf = new BinaryBedrijfDAO();
+
+//    private static PersoonDao persoon = new TextPersoonDao();
+//    private static PersoonDao persoon = new FakePersoonDao();
+    private static PersoonDao persoon = new ObjectPersoonDAO();
+
+
+
 
     private final String TITLE = String.format("Practicumopdracht OOP2 - %s", Main.studentNaam);
     private final int WIDTH = 640;

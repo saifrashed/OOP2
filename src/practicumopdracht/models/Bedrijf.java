@@ -1,5 +1,6 @@
 package practicumopdracht.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  * toegevoegd, aangepast, verwijderd
  * of uitgelezen
  */
-public class Bedrijf {
+public class Bedrijf implements Serializable {
     private String naam;
     private String omschrijving;
     private final ArrayList<Persoon> personen = new ArrayList<Persoon>();

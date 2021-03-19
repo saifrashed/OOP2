@@ -1,8 +1,10 @@
 package practicumopdracht.models;
 
 import java.time.LocalDate;
+import java.io.Serializable;
 
-public class Persoon {
+
+public class Persoon implements Serializable {
     private String naam;
     private LocalDate geboorteDatum;
     private boolean isWerkzaam;

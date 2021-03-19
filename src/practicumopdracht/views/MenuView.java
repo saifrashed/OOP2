@@ -7,8 +7,8 @@ import javafx.scene.control.MenuItem;
 
 public class MenuView extends View {
 
-    private MenuItem save = new MenuItem("Save");
-    private MenuItem load = new MenuItem("Load");
+    private MenuItem save = new MenuItem("Opslaan");
+    private MenuItem load = new MenuItem("Laden");
     private MenuItem quit = new MenuItem("Afsluiten");
 
     private final MenuBar root;

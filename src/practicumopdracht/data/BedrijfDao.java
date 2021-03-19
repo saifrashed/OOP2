@@ -25,12 +25,6 @@ public abstract class BedrijfDao implements DAO<Bedrijf> {
         objects.remove(item);
     }
 
-    @Override
-    public abstract boolean save();
-
-    @Override
-    public abstract boolean load();
-
     public int getIdFor(Bedrijf bedrijf) {
         return this.objects.indexOf(bedrijf);
     }
@@ -38,4 +32,10 @@ public abstract class BedrijfDao implements DAO<Bedrijf> {
     public Bedrijf getById(int i) {
         return this.objects.get(i);
     }
+
+    @Override
+    public abstract boolean save();
+
+    @Override
+    public abstract boolean load();
 }
