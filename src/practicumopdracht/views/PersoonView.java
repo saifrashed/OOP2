@@ -1,13 +1,12 @@
 package practicumopdracht.views;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.Parent;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import practicumopdracht.models.Bedrijf;
 import practicumopdracht.models.Persoon;
 
@@ -29,16 +28,6 @@ public class PersoonView extends View {
     private final VBox topForm = new VBox();
     private final HBox actions = new HBox();
     private final HBox bottomActions = new HBox();
-
-//    /**
-//     * Menu bar
-//     */
-//    private MenuBar menuBar = new MenuBar();
-//    private Menu fileItem = new Menu("Bestand");
-//    private MenuItem fileSave = new MenuItem("Opslaan");
-//    private MenuItem fileLoad = new MenuItem("Laden");
-//    private MenuItem fileClose = new MenuItem("Afsluiten");
-//    private Menu sortItem = new Menu("Sorteren");
 
     /**
      * Lijst nodes
@@ -219,18 +208,12 @@ public class PersoonView extends View {
     }
 
 
-    public void setBedrijf(Bedrijf bedrijf, List<Persoon> Personen) {
-
+    public void setPersonen(Bedrijf bedrijf, ObservableList<Persoon> personen) {
         this.getBedrijvenComboField().getSelectionModel().select(bedrijf);
         listView.getItems().clear();
-        listView.getItems().addAll(Personen);
+        listView.getItems().addAll(personen);
     }
 
-
-    public void setPersoon(List<Persoon> personen) {
-        this.listView.getItems().clear();
-        this.listView.getItems().addAll(personen);
-    }
 
     public ComboBox<Bedrijf> getBedrijvenComboField() {
         return bedrijvenComboField;

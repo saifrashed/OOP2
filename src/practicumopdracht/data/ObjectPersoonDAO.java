@@ -1,5 +1,7 @@
 package practicumopdracht.data;
 
+import practicumopdracht.MainApplication;
+import practicumopdracht.models.Bedrijf;
 import practicumopdracht.models.Persoon;
 
 import java.io.*;
@@ -7,6 +9,7 @@ import java.io.*;
 public class ObjectPersoonDAO extends PersoonDao {
 
     private static final String FILENAME = "persoon.bin";
+    private BedrijfDao bedrijf = MainApplication.getBedrijven();
 
     @Override
     public boolean save() {
@@ -43,17 +46,29 @@ public class ObjectPersoonDAO extends PersoonDao {
         ) {
             int aantalObjecten = objectInputStream.readInt();
 
-            for (int i = 0; i < aantalObjecten; i++) {
-                Persoon persoon = (Persoon) objectInputStream.readObject();
+            if (aantalObjecten > -1) {
+                for (int i = 0; i < aantalObjecten; i++) {
+                    Persoon persoon = (Persoon) objectInputStream.readObject();
 
-                addOrUpdate(persoon);
-                System.out.println(persoon.toString());
+                    System.out.println(persoon.getHoortBij());
+                    System.out.println(bedrijf.getById(0));
+
+                    for (Bedrijf bedrijf : bedrijf.getAll()) {
+                        if (persoon.getHoortBij().getNaam().equals(bedrijf.getNaam())) {
+                            persoon.setHoortBij(bedrijf);
+                            this.objects.add(persoon);
+                        }
+                    }
+                }
             }
 
             fileInputStream.close();
             objectInputStream.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (FileNotFoundException e) {
+            System.out.println("Het bestand is niet gevonden");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("De klasse is niet gevonden");
+            e.printStackTrace();
         }
 
 

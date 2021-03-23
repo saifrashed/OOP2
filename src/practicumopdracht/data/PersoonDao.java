@@ -1,20 +1,18 @@
 package practicumopdracht.data;
 
-import practicumopdracht.models.Persoon;
 import practicumopdracht.models.Bedrijf;
-
+import practicumopdracht.models.Persoon;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PersoonDao implements DAO<Persoon> {
     protected List<Persoon> objects = new ArrayList<>();
 
-    public List<Persoon> getAllFor(Bedrijf m){
-
+    public List<Persoon> getAllFor(Bedrijf bedrijf){
         List<Persoon> result = new ArrayList<>();
-        for(Persoon f: objects){
-            if(f.getHoortBij() == m){
-                result.add(f);
+        for(Persoon persoon: objects){
+            if(persoon.getHoortBij() == bedrijf){
+                result.add(persoon);
             }
         }
 
@@ -36,6 +34,16 @@ public abstract class PersoonDao implements DAO<Persoon> {
     @Override
     public void remove(Persoon item) {
         objects.remove(item);
+    }
+
+    public void removeAll() { objects.removeAll(objects); }
+
+    public void removeAllFor(Bedrijf bedrijf) {
+        for(Persoon persoon: objects){
+            if(persoon.getHoortBij() == bedrijf){
+                objects.remove(persoon);
+            }
+        }
     }
 
     @Override

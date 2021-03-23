@@ -18,11 +18,11 @@ public class TextPersoonDao extends PersoonDao {
         PrintWriter writer = null;
         try {
             writer = new PrintWriter(file);
-            for (Persoon f : this.objects) {
-                int bedrijfId = bedrijf.getIdFor(f.getHoortBij());
+            for (Persoon persoon : this.objects) {
+                int bedrijfId = bedrijf.getIdFor(persoon.getHoortBij());
 
                 writer.write(String.format("%s,%s,%s,%s,%s\n",
-                        f.getNaam(), f.getGeboorteDatum(), f.isWerkzaam(), f.getLengte(), bedrijfId));
+                        persoon.getNaam(), persoon.getGeboorteDatum(), persoon.isWerkzaam(), persoon.getLengte(), bedrijfId));
             }
             return true;
         } catch (Exception ex) {
@@ -48,8 +48,8 @@ public class TextPersoonDao extends PersoonDao {
                 String rawLine = scanner.nextLine();
                 String[] parts = rawLine.split(",");
 
-                int mandId = Integer.parseInt(parts[4]);
-                Bedrijf bijbehorendeBedrijf = bedrijf.getById(mandId);
+                int bedrijfId = Integer.parseInt(parts[4]);
+                Bedrijf bijbehorendeBedrijf = bedrijf.getById(bedrijfId);
 
                 Persoon f = new Persoon(parts[0], LocalDate.parse(parts[1]), Boolean.parseBoolean(parts[2]) , Double.parseDouble(parts[3]), bijbehorendeBedrijf);
 

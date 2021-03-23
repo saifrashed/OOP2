@@ -4,9 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import practicumopdracht.controllers.BedrijfController;
-import practicumopdracht.controllers.Controller;
-import practicumopdracht.controllers.MenuController;
+import practicumopdracht.controllers.*;
 import practicumopdracht.data.*;
 import practicumopdracht.models.Bedrijf;
 
@@ -16,15 +14,13 @@ public class MainApplication extends Application {
 
     private static BorderPane mainPane;
 
-//    private static BedrijfDao bedrijf = new TextBedrijfDao();
+//        private static BedrijfDao bedrijf = new TextBedrijfDao();
 //    private static BedrijfDao bedrijf = new FakeBedrijfDao();
-     private static BedrijfDao bedrijf = new BinaryBedrijfDAO();
+    private static BedrijfDao bedrijf = new BinaryBedrijfDAO();
 
-//    private static PersoonDao persoon = new TextPersoonDao();
+//        private static PersoonDao persoon = new TextPersoonDao();
 //    private static PersoonDao persoon = new FakePersoonDao();
     private static PersoonDao persoon = new ObjectPersoonDAO();
-
-
 
 
     private final String TITLE = String.format("Practicumopdracht OOP2 - %s", Main.studentNaam);

@@ -6,8 +6,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.Parent;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import practicumopdracht.models.Bedrijf;
 
 import java.util.List;
@@ -28,18 +26,6 @@ public class BedrijfView extends View {
     private final VBox topForm = new VBox();
     private final HBox actions = new HBox();
     private final HBox bottomActions = new HBox();
-
-//    /**
-//     * Menu bar
-//     */
-//    private MenuBar menuBar = new MenuBar();
-//    private Menu fileItem = new Menu("Bestand");
-//    private MenuItem fileSave = new MenuItem("Opslaan");
-//    private MenuItem fileLoad = new MenuItem("Laden");
-//    private MenuItem fileClose = new MenuItem("Afsluiten");
-//
-//
-//    private Menu sortItem = new Menu("Sorteren");
 
     /**
      * Lijst nodes
@@ -85,11 +71,6 @@ public class BedrijfView extends View {
      * View init
      */
     private void initializeRoot() {
-        // menu bar
-//        fileItem.getItems().addAll(fileSave, fileLoad, fileClose);
-//        menuBar.getMenus().addAll(fileItem, sortItem);
-//        VBox MenuvBox = new VBox(menuBar);
-
         // top form sectie
         HBox bedrijfNaamBox = new HBox();
         this.bedrijfNaam.setPrefWidth(120);

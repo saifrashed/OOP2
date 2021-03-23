@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class Bedrijf implements Serializable {
     private String naam;
     private String omschrijving;
-    private final ArrayList<Persoon> personen = new ArrayList<Persoon>();
 
     /**
      * Constructor Bedrijf
@@ -61,25 +60,7 @@ public class Bedrijf implements Serializable {
     public void setOmschrijving(String omschrijving) {
         this.omschrijving = omschrijving;
     }
-
-    /**
-     * Haalt personen op van bedrijf
-     *
-     * @return ArrayList Personen
-     */
-    public ArrayList<Persoon> getPersonen() {
-        return personen;
-    }
-
-    /**
-     * Voegt persoon toe aan bedrijf
-     *
-     * @param persoon persoon en bijhorende gegevens
-     */
-    public void addPersonen(Persoon persoon) {
-        this.personen.add(persoon);
-    }
-
+    
     /**
      * Geeft een string representatie weer
      *

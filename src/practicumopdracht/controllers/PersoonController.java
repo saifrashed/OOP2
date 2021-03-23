@@ -1,8 +1,10 @@
 package practicumopdracht.controllers;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import practicumopdracht.MainApplication;
 import practicumopdracht.models.Bedrijf;
 import practicumopdracht.models.Persoon;
@@ -10,6 +12,7 @@ import practicumopdracht.views.PersoonView;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -26,6 +29,8 @@ public class PersoonController extends Controller {
      */
     private PersoonView view;
     private Bedrijf bedrijfInBewerking;
+    private ObservableList<Persoon> persoonObservableList;
+
 
     /**
      * Verschillende commando's binnen deze controller
@@ -42,11 +47,12 @@ public class PersoonController extends Controller {
     public PersoonController(Bedrijf bedrijf) {
         view = new PersoonView();
         bedrijfInBewerking = bedrijf;
+        persoonObservableList = FXCollections.observableList(MainApplication.getPersoon().getAllFor(bedrijfInBewerking));
 
         this.view.getBedrijvenComboField().setItems(FXCollections.observableArrayList(MainApplication.getBedrijven().getAll()));
 
         if (bedrijfInBewerking != null) {
-            this.view.setBedrijf(bedrijfInBewerking, MainApplication.getPersoon().getAllFor(bedrijfInBewerking));
+            this.view.setPersonen(bedrijfInBewerking, persoonObservableList);
         }
 
         view.getSubmitBtn().setOnAction(e -> handleButtonClick(UPDATE_PERSOON));
@@ -89,29 +95,41 @@ public class PersoonController extends Controller {
      * Toevoegen Bedrijf business logic
      */
     public void createPersoon() {
-        // code
         if (validateFields()) {
-            Bedrijf doelbedrijf = this.view.getBedrijvenComboField().getSelectionModel().getSelectedItem();
-            Persoon persoonObj = new Persoon(view.getPersoonNaamField().getText(), view.getGeboortDatumField().getValue(), view.getIsActiefField().isSelected(), Double.parseDouble(view.getPersoonLengteField().getText()), doelbedrijf);
-            MainApplication.getPersoon().addOrUpdate(persoonObj);
-            view.setBedrijf(doelbedrijf, MainApplication.getPersoon().getAllFor(doelbedrijf));
+            Persoon nieuwPersoon = new Persoon(
+                    view.getPersoonNaamField().getText(),
+                    view.getGeboortDatumField().getValue(),
+                    view.getIsActiefField().isSelected(),
+                    Double.parseDouble(view.getPersoonLengteField().getText()),
+                    bedrijfInBewerking
+            );
+
+            MainApplication.getPersoon().addOrUpdate(nieuwPersoon);
+            refreshList();
             clearFields();
         }
-
     }
 
     /**
      * Verwijderen Bedrijf business logic
      */
     public void deletePersoon() {
-        // code
+        if(hasSelectedPersoon()) {
+            Optional<ButtonType> option = displayAlert("Verwijderen", "Weet u zeker dat u dit wilt verwijderen?", "CONFIRMATION");
+            if (option.get() == ButtonType.OK) {
+                MainApplication.getPersoon().remove((Persoon) view.getListView().getSelectionModel().getSelectedItem());
+                refreshList();
+            }
+        }
     }
 
     /**
      * Aanpassen Bedrijf business logic
      */
     public void updatePersoon() {
-        // code
+        if(hasSelectedPersoon()) {
+
+        }
     }
 
     /**
@@ -126,6 +144,10 @@ public class PersoonController extends Controller {
     public void selectPersoon() {
         int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
 
+        view.getPersoonNaamField().setText(persoonObservableList.get(selectedIndex).getNaam());
+        view.getPersoonLengteField().setText(Double.toString(persoonObservableList.get(selectedIndex).getLengte()));
+        view.getGeboortDatumField().setValue(persoonObservableList.get(selectedIndex).getGeboorteDatum());
+        view.getIsActiefField().setSelected(persoonObservableList.get(selectedIndex).isWerkzaam());
     }
 
     /**
@@ -162,8 +184,9 @@ public class PersoonController extends Controller {
      * Weergeven van een melding
      *
      * @param message Het bericht dat in de melding staat
+     * @return
      */
-    private void displayAlert(String title, String message, String type) {
+    private Optional<ButtonType> displayAlert(String title, String message, String type) {
         switch (type) {
             case "ERROR":
                 view.getAlert().setAlertType(Alert.AlertType.ERROR);
@@ -182,14 +205,20 @@ public class PersoonController extends Controller {
         view.getAlert().setTitle("Melding");
         view.getAlert().setHeaderText(title);
         view.getAlert().setContentText(message);
-        view.getAlert().showAndWait();
+        return view.getAlert().showAndWait();
     }
+
 
     private void clearFields() {
         view.getPersoonNaamField().clear();
         view.getIsActiefField().setSelected(false);
         view.getPersoonLengteField().clear();
         view.getGeboortDatumField().getEditor().clear();
+    }
+
+    private void refreshList() {
+        persoonObservableList = FXCollections.observableList(MainApplication.getPersoon().getAllFor(bedrijfInBewerking));
+        view.setPersonen(bedrijfInBewerking, persoonObservableList);
     }
 
     /**

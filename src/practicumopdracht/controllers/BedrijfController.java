@@ -2,11 +2,13 @@ package practicumopdracht.controllers;
 
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import practicumopdracht.MainApplication;
 import practicumopdracht.models.Bedrijf;
 import practicumopdracht.views.BedrijfView;
 
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -26,7 +28,7 @@ public class BedrijfController extends Controller {
     /**
      * Verschillende commando's binnen deze controller
      */
-    private static final String CREATE_BEDRIJF = "create";
+    private static final String RESET_BEDRIJF = "reset";
     private static final String DELETE_BEDRIJF = "delete";
     private static final String UPDATE_BEDRIJF = "update";
     private static final String READ_BEDRIJF = "read";
@@ -41,7 +43,7 @@ public class BedrijfController extends Controller {
 
         view.getSubmitBtn().setOnAction(e -> handleButtonClick(UPDATE_BEDRIJF));
         view.getDeleteBtn().setOnAction(e -> handleButtonClick(DELETE_BEDRIJF));
-        view.getNieuwBtn().setOnAction(e -> handleButtonClick(CREATE_BEDRIJF));
+        view.getNieuwBtn().setOnAction(e -> handleButtonClick(RESET_BEDRIJF));
         view.getReadBtn().setOnAction(e -> handleButtonClick(READ_BEDRIJF));
         view.getListView().setOnMouseClicked(e -> {
             if (e.getClickCount() == 2) {
@@ -60,8 +62,8 @@ public class BedrijfController extends Controller {
     private void handleButtonClick(String command) {
         try {
             switch (command) {
-                case CREATE_BEDRIJF:
-                    this.createBedrijf();
+                case RESET_BEDRIJF:
+                    this.resetBedrijf();
                     break;
                 case DELETE_BEDRIJF:
                     this.deleteBedrijf();
@@ -82,14 +84,13 @@ public class BedrijfController extends Controller {
     }
 
     /**
-     * Toevoegen Bedrijf business logic
+     * Reset Bedrijf business logic
      */
-    private void createBedrijf() {
-        if (validateFields()) {
-            MainApplication.getBedrijven().addOrUpdate(new Bedrijf(view.getBedrijfNaamField().getText(), view.getOmschrijvingField().getText()));
-            view.setBedrijven(MainApplication.getBedrijven().getAll());
-            clearFields();
-        }
+    private void resetBedrijf() {
+        clearFields();
+        MainApplication.getPersoon().removeAll();
+        MainApplication.getBedrijven().removeAll();
+        view.setBedrijven(MainApplication.getBedrijven().getAll());
     }
 
     /**
@@ -97,10 +98,16 @@ public class BedrijfController extends Controller {
      */
     private void deleteBedrijf() {
         if (hasSelectedBedrijf()) {
-            int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
 
-            MainApplication.getBedrijven().remove(MainApplication.getBedrijven().getById(selectedIndex));
-            view.setBedrijven(MainApplication.getBedrijven().getAll());
+            Optional<ButtonType> option = displayAlert("Verwijderen", "Weet u zeker dat u dit wilt verwijderen?", "CONFIRMATION");
+
+            if (option.get() == ButtonType.OK) {
+                int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
+
+                MainApplication.getPersoon().getAllFor(MainApplication.getBedrijven().getById(selectedIndex));
+                MainApplication.getBedrijven().remove(MainApplication.getBedrijven().getById(selectedIndex));
+                view.setBedrijven(MainApplication.getBedrijven().getAll());
+            }
         }
     }
 
@@ -111,13 +118,19 @@ public class BedrijfController extends Controller {
         if (validateFields()) {
             int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
 
-            String bedrijfsNaamInput = view.getBedrijfNaamField().getText();
-            String omschrijving = view.getOmschrijvingField().getText();
+            if (selectedIndex > -1) {
+                String bedrijfsNaamInput = view.getBedrijfNaamField().getText();
+                String omschrijving = view.getOmschrijvingField().getText();
 
-            MainApplication.getBedrijven().getById(selectedIndex).setNaam(bedrijfsNaamInput);
-            MainApplication.getBedrijven().getById(selectedIndex).setOmschrijving(omschrijving);
-            view.setBedrijven(MainApplication.getBedrijven().getAll());
-            clearFields();
+                MainApplication.getBedrijven().getById(selectedIndex).setNaam(bedrijfsNaamInput);
+                MainApplication.getBedrijven().getById(selectedIndex).setOmschrijving(omschrijving);
+                view.setBedrijven(MainApplication.getBedrijven().getAll());
+                clearFields();
+            } else {
+                MainApplication.getBedrijven().addOrUpdate(new Bedrijf(view.getBedrijfNaamField().getText(), view.getOmschrijvingField().getText()));
+                view.setBedrijven(MainApplication.getBedrijven().getAll());
+                clearFields();
+            }
         }
     }
 
@@ -130,8 +143,6 @@ public class BedrijfController extends Controller {
 
             PersoonController persoon = new PersoonController(MainApplication.getBedrijven().getById(selectedIndex));
             MainApplication.switchController(persoon);
-        } else {
-            displayAlert("Foutmelding", "U hebt geen bedrijf geselecteerd", "WARNING");
         }
     }
 
@@ -197,8 +208,9 @@ public class BedrijfController extends Controller {
      * Weergeven van een melding
      *
      * @param message Het bericht dat in de melding staat
+     * @return
      */
-    private void displayAlert(String title, String message, String type) {
+    private Optional<ButtonType> displayAlert(String title, String message, String type) {
         switch (type) {
             case "ERROR":
                 view.getAlert().setAlertType(Alert.AlertType.ERROR);
@@ -217,7 +229,7 @@ public class BedrijfController extends Controller {
         view.getAlert().setTitle("Melding");
         view.getAlert().setHeaderText(title);
         view.getAlert().setContentText(message);
-        view.getAlert().showAndWait();
+        return view.getAlert().showAndWait();
     }
 
     /**
