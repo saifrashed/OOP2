@@ -48,8 +48,7 @@ public class TextPersoonDao extends PersoonDao {
                 String rawLine = scanner.nextLine();
                 String[] parts = rawLine.split(",");
 
-                int bedrijfId = Integer.parseInt(parts[4]);
-                Bedrijf bijbehorendeBedrijf = bedrijf.getById(bedrijfId);
+                Bedrijf bijbehorendeBedrijf = bedrijf.getById(Integer.parseInt(parts[4]));
 
                 Persoon f = new Persoon(parts[0], LocalDate.parse(parts[1]), Boolean.parseBoolean(parts[2]) , Double.parseDouble(parts[3]), bijbehorendeBedrijf);
 

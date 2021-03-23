@@ -1,13 +1,16 @@
 package practicumopdracht.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import practicumopdracht.MainApplication;
+import practicumopdracht.comparators.BedrijfNaamComparator;
 import practicumopdracht.models.Bedrijf;
 import practicumopdracht.views.BedrijfView;
 
-import java.util.List;
+import java.util.Comparator;
 import java.util.Optional;
 
 
@@ -24,6 +27,7 @@ public class BedrijfController extends Controller {
      * Model & View declaraties
      */
     private BedrijfView view;
+    private ObservableList<Bedrijf> bedrijfObservableList;
 
     /**
      * Verschillende commando's binnen deze controller
@@ -37,9 +41,10 @@ public class BedrijfController extends Controller {
     /**
      * Constructor
      */
-    public BedrijfController(List<Bedrijf> bedrijf) {
+    public BedrijfController() {
         view = new BedrijfView();
-        view.setBedrijven(bedrijf);
+        bedrijfObservableList = FXCollections.observableList(MainApplication.getBedrijven().getAll());
+        view.setBedrijven(bedrijfObservableList);
 
         view.getSubmitBtn().setOnAction(e -> handleButtonClick(UPDATE_BEDRIJF));
         view.getDeleteBtn().setOnAction(e -> handleButtonClick(DELETE_BEDRIJF));
@@ -52,6 +57,13 @@ public class BedrijfController extends Controller {
                 handleButtonClick(SELECT_BEDRIJF);
             }
         });
+
+        view.getSave().setOnAction(e -> menuSave());
+        view.getLoad().setOnAction(e -> menuLoad());
+        view.getQuit().setOnAction(e -> menuQuit());
+        view.getSortAZ().setOnAction(e -> menuSortAZ());
+        view.getSortZA().setOnAction(e -> menuSortZA());
+
     }
 
     /**
@@ -87,10 +99,10 @@ public class BedrijfController extends Controller {
      * Reset Bedrijf business logic
      */
     private void resetBedrijf() {
-        clearFields();
         MainApplication.getPersoon().removeAll();
         MainApplication.getBedrijven().removeAll();
-        view.setBedrijven(MainApplication.getBedrijven().getAll());
+        clearFields();
+        refreshList();
     }
 
     /**
@@ -106,7 +118,7 @@ public class BedrijfController extends Controller {
 
                 MainApplication.getPersoon().getAllFor(MainApplication.getBedrijven().getById(selectedIndex));
                 MainApplication.getBedrijven().remove(MainApplication.getBedrijven().getById(selectedIndex));
-                view.setBedrijven(MainApplication.getBedrijven().getAll());
+                refreshList();
             }
         }
     }
@@ -124,11 +136,11 @@ public class BedrijfController extends Controller {
 
                 MainApplication.getBedrijven().getById(selectedIndex).setNaam(bedrijfsNaamInput);
                 MainApplication.getBedrijven().getById(selectedIndex).setOmschrijving(omschrijving);
-                view.setBedrijven(MainApplication.getBedrijven().getAll());
+                refreshList();
                 clearFields();
             } else {
                 MainApplication.getBedrijven().addOrUpdate(new Bedrijf(view.getBedrijfNaamField().getText(), view.getOmschrijvingField().getText()));
-                view.setBedrijven(MainApplication.getBedrijven().getAll());
+                refreshList();
                 clearFields();
             }
         }
@@ -199,6 +211,52 @@ public class BedrijfController extends Controller {
         }
     }
 
+    /**
+     * opslaan van gegevens logica
+     */
+    private void menuSave() {
+        MainApplication.getBedrijven().save();
+        MainApplication.getPersoon().save();
+        refreshList();
+    }
+
+    /**
+     * Inladen van gegevens logica
+     */
+    private void menuLoad() {
+        MainApplication.getBedrijven().load();
+        MainApplication.getPersoon().load();
+        refreshList();
+    }
+
+    /**
+     * Applicatie sluiten
+     */
+    private void menuQuit() {
+        MainApplication.getPrimaryStage().close();
+    }
+
+    /**
+     * Omhoog sorteren logica
+     */
+    private void menuSortAZ() {
+        Comparator<Bedrijf> sort = new BedrijfNaamComparator("ASC");
+        bedrijfObservableList.sort(sort);
+        updateSortedList();
+    }
+
+    /**
+     * Omlaag sorteren logica
+     */
+    private void menuSortZA() {
+        Comparator<Bedrijf> sort = new BedrijfNaamComparator("DESC");
+        bedrijfObservableList.sort(sort);
+        updateSortedList();
+    }
+
+    /**
+     * Schoont velden op
+     */
     private void clearFields() {
         view.getBedrijfNaamField().clear();
         view.getOmschrijvingField().clear();
@@ -230,6 +288,21 @@ public class BedrijfController extends Controller {
         view.getAlert().setHeaderText(title);
         view.getAlert().setContentText(message);
         return view.getAlert().showAndWait();
+    }
+
+    /**
+     * Werkt de lijst bij
+     */
+    private void refreshList() {
+        bedrijfObservableList = FXCollections.observableList(MainApplication.getBedrijven().getAll());
+        view.setBedrijven(bedrijfObservableList);
+    }
+
+    /**
+     * Werkt de lijst bij voor sortering
+     */
+    private void updateSortedList() {
+        view.setBedrijven(bedrijfObservableList);
     }
 
     /**

@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * toegevoegd, aangepast, verwijderd
  * of uitgelezen
  */
-public class Bedrijf implements Serializable {
+public class Bedrijf {
     private String naam;
     private String omschrijving;
 

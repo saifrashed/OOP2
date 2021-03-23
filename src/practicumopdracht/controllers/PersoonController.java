@@ -1,17 +1,22 @@
 package practicumopdracht.controllers;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Toggle;
 import practicumopdracht.MainApplication;
+import practicumopdracht.comparators.PersoonLengteComparator;
+import practicumopdracht.comparators.PersoonNaamComparator;
 import practicumopdracht.models.Bedrijf;
 import practicumopdracht.models.Persoon;
 import practicumopdracht.views.PersoonView;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Comparator;
 import java.util.Optional;
 
 
@@ -60,6 +65,44 @@ public class PersoonController extends Controller {
         view.getNieuwBtn().setOnAction(e -> handleButtonClick(CREATE_PERSOON));
         view.getReturnBtn().setOnAction(e -> handleButtonClick(READ_PERSOON));
         view.getListView().setOnMouseClicked(e -> handleButtonClick(SELECT_PERSOON));
+        view.getBedrijvenComboField().setOnAction(e -> {
+            bedrijfInBewerking = view.getBedrijvenComboField().getValue();
+            refreshList();
+        });
+
+        // toggle group listener
+        view.getToggleGroup().selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
+                handleSort(view.getToggleGroup().getSelectedToggle());
+            }
+        });
+    }
+
+    /**
+     * Sort function
+     * @param selectedToggle
+     */
+    private void handleSort(Toggle selectedToggle) {
+        if (view.getToggleGroup().getSelectedToggle() == view.getSorteerAZRadioButton()) {
+            Comparator<Persoon> sort = new PersoonNaamComparator("ASC");
+            persoonObservableList.sort(sort);
+            updateSortedList();
+        } else if (view.getToggleGroup().getSelectedToggle() == view.getSorteerZARadioButton()) {
+            Comparator<Persoon> sort = new PersoonNaamComparator("DESC");
+            persoonObservableList.sort(sort);
+            updateSortedList();
+        } else if (view.getToggleGroup().getSelectedToggle() == view.getSorteerLengteAscRadioButton()) {
+            Comparator<Persoon> sort = new PersoonLengteComparator("ASC");
+            persoonObservableList.sort(sort);
+            updateSortedList();
+        } else if (view.getToggleGroup().getSelectedToggle() == view.getSorteerLengteDescRadioButton()) {
+            Comparator<Persoon> sort = new PersoonLengteComparator("DESC");
+            persoonObservableList.sort(sort);
+            updateSortedList();
+        } else {
+
+        }
     }
 
     /**
@@ -114,7 +157,7 @@ public class PersoonController extends Controller {
      * Verwijderen Bedrijf business logic
      */
     public void deletePersoon() {
-        if(hasSelectedPersoon()) {
+        if (hasSelectedPersoon()) {
             Optional<ButtonType> option = displayAlert("Verwijderen", "Weet u zeker dat u dit wilt verwijderen?", "CONFIRMATION");
             if (option.get() == ButtonType.OK) {
                 MainApplication.getPersoon().remove((Persoon) view.getListView().getSelectionModel().getSelectedItem());
@@ -127,8 +170,21 @@ public class PersoonController extends Controller {
      * Aanpassen Bedrijf business logic
      */
     public void updatePersoon() {
-        if(hasSelectedPersoon()) {
+        if (hasSelectedPersoon()) {
+            Persoon nieuwPersoon = new Persoon(
+                    view.getPersoonNaamField().getText(),
+                    view.getGeboortDatumField().getValue(),
+                    view.getIsActiefField().isSelected(),
+                    Double.parseDouble(view.getPersoonLengteField().getText()),
+                    bedrijfInBewerking
+            );
 
+            if (hasSelectedPersoon() && validateFields()) {
+                MainApplication.getPersoon().remove(view.getListView().getSelectionModel().getSelectedItem());
+                MainApplication.getPersoon().addOrUpdate(nieuwPersoon);
+                refreshList();
+                clearFields();
+            }
         }
     }
 
@@ -136,11 +192,13 @@ public class PersoonController extends Controller {
      * Uitlezen en navigeren naar detail pagina business logic
      */
     public void returnPersoon() {
-        List<Bedrijf> list = MainApplication.getBedrijven().getAll();
-        BedrijfController bedrijf = new BedrijfController(list);
+        BedrijfController bedrijf = new BedrijfController();
         MainApplication.switchController(bedrijf);
     }
 
+    /**
+     * Selecteren van persoon en gegevens in de velden plaatsen
+     */
     public void selectPersoon() {
         int selectedIndex = view.getListView().getSelectionModel().getSelectedIndex();
 
@@ -218,6 +276,13 @@ public class PersoonController extends Controller {
 
     private void refreshList() {
         persoonObservableList = FXCollections.observableList(MainApplication.getPersoon().getAllFor(bedrijfInBewerking));
+        view.setPersonen(bedrijfInBewerking, persoonObservableList);
+    }
+
+    /**
+     * Werkt de lijst bij voor sortering
+     */
+    private void updateSortedList() {
         view.setPersonen(bedrijfInBewerking, persoonObservableList);
     }
 

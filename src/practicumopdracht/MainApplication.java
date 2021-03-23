@@ -3,6 +3,7 @@ package practicumopdracht;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import practicumopdracht.controllers.*;
 import practicumopdracht.data.*;
@@ -13,12 +14,13 @@ import java.util.List;
 public class MainApplication extends Application {
 
     private static BorderPane mainPane;
+    private static Stage primaryStage;
 
-//        private static BedrijfDao bedrijf = new TextBedrijfDao();
+    //        private static BedrijfDao bedrijf = new TextBedrijfDao();
 //    private static BedrijfDao bedrijf = new FakeBedrijfDao();
     private static BedrijfDao bedrijf = new BinaryBedrijfDAO();
 
-//        private static PersoonDao persoon = new TextPersoonDao();
+    //        private static PersoonDao persoon = new TextPersoonDao();
 //    private static PersoonDao persoon = new FakePersoonDao();
     private static PersoonDao persoon = new ObjectPersoonDAO();
 
@@ -35,19 +37,14 @@ public class MainApplication extends Application {
             return;
         }
 
+        primaryStage = stage;
+
         bedrijf.load();
         persoon.load();
 
-        List<Bedrijf> list = bedrijf.getAll();
-
         mainPane = new BorderPane();
-
-        mainPane.setTop(new MenuController(stage).getView());
-
-        BedrijfController bedrijf = new BedrijfController(list);
-
+        BedrijfController bedrijf = new BedrijfController();
         switchController(bedrijf);
-
         stage.setScene(new Scene(mainPane));
 
 
@@ -70,5 +67,9 @@ public class MainApplication extends Application {
 
     public static PersoonDao getPersoon() {
         return persoon;
+    }
+
+    public static Stage getPrimaryStage() {
+        return primaryStage;
     }
 }

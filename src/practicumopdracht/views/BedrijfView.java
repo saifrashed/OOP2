@@ -1,5 +1,6 @@
 package practicumopdracht.views;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -7,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.Parent;
 import practicumopdracht.models.Bedrijf;
+import practicumopdracht.models.Persoon;
 
 import java.util.List;
 
@@ -59,6 +61,19 @@ public class BedrijfView extends View {
      */
     private final Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
+    /**
+     * Menu items
+     */
+
+    private MenuItem save = new MenuItem("Opslaan");
+    private MenuItem load = new MenuItem("Laden");
+    private MenuItem quit = new MenuItem("Afsluiten");
+
+    private MenuItem sortAZ = new MenuItem("Naam (A-Z)");
+    private MenuItem sortZA = new MenuItem("Naam (Z-A)");
+
+    private Menu saveLoad = new Menu("Bestand", null, save, load, quit);
+    private Menu sort = new Menu("Sorteren", null, sortAZ, sortZA);
 
     /**
      * Constructor BedrijfView
@@ -88,12 +103,12 @@ public class BedrijfView extends View {
 
         // actions sectie
         submitBtn.prefWidthProperty().bind(this.topForm.widthProperty());
+        actions.setPadding(new Insets(10, 10, 10, 10));
         this.actions.getChildren().add(submitBtn);
 
         // list sectie
         this.listView.prefWidthProperty().bind(this.list.widthProperty());
         this.list.getChildren().add(this.listView);
-
 
         // Bottom actions gridpane
         GridPane gp = new GridPane();
@@ -116,6 +131,10 @@ public class BedrijfView extends View {
         gp.add(this.deleteBtn, 1, 0);
         gp.add(this.readBtn, 2, 0);
 
+        gp.setHgap(20);
+        gp.setVgap(20);
+        gp.setPadding(new Insets(10, 10, 10, 10));
+
         this.nieuwBtn.setMaxWidth(1000);
         this.deleteBtn.setMaxWidth(1000);
         this.readBtn.setMaxWidth(1000);
@@ -123,11 +142,19 @@ public class BedrijfView extends View {
         this.bottomActions.getChildren().addAll(gp);
 
         // root box sectie
-        this.rootVbox.getChildren().addAll(this.topForm, this.actions, this.list, this.bottomActions);
+        this.rootVbox.getChildren().addAll(new MenuBar(saveLoad,sort), this.topForm, this.actions, this.list, this.bottomActions);
     }
 
 
-
+    /**
+     * Stelt lijst in voor bedrijven
+     *
+     * @param bedrijven Lijst van bedrijven
+     */
+    public void setBedrijven(ObservableList<Bedrijf> bedrijven) {
+        this.listView.getItems().clear();
+        this.listView.getItems().addAll(bedrijven);
+    }
 
     /**
      * Haalt lijst op
@@ -183,14 +210,13 @@ public class BedrijfView extends View {
         return bedrijfNaamField;
     }
 
+    /**
+     * Haalt bedrijf omschrijving op
+     *
+     * @return
+     */
     public TextArea getOmschrijvingField() {
         return omschrijvingField;
-    }
-
-
-    public void setBedrijven(List<Bedrijf> bedrijven) {
-        this.listView.getItems().clear();
-        this.listView.getItems().addAll(bedrijven);
     }
 
     /**
@@ -200,6 +226,46 @@ public class BedrijfView extends View {
      */
     public Alert getAlert() {
         return alert;
+    }
+
+    /**
+     * Haalt opslaan knop op
+     * @return Menuitem node
+     */
+    public MenuItem getSave() {
+        return save;
+    }
+
+    /**
+     * Haalt laad knop op
+     * @return Menuitem node
+     */
+    public MenuItem getLoad() {
+        return load;
+    }
+
+    /**
+     * Haalt Afsluit knop op
+     * @return Menuitem node
+     */
+    public MenuItem getQuit() {
+        return quit;
+    }
+
+    /**
+     * Sorteer van A naar Z
+     * @return MenuItem node
+     */
+    public MenuItem getSortAZ() {
+        return sortAZ;
+    }
+
+    /**
+     * Sorteer van Z naar A
+     * @return Menuitem node
+     */
+    public MenuItem getSortZA() {
+        return sortZA;
     }
 
     /**

@@ -9,7 +9,7 @@ public class Persoon implements Serializable {
     private LocalDate geboorteDatum;
     private boolean isWerkzaam;
     private double lengte;
-    private Bedrijf hoortBij;
+    private transient Bedrijf hoortBij;
 
     public Persoon(String naam, LocalDate geboorteDatum, boolean isWerkzaam, double lengte, Bedrijf bedrijf) {
         this.naam = naam;
@@ -70,7 +70,7 @@ public class Persoon implements Serializable {
         string.append(lengte);
         string.append("\n");
 
-        if(isWerkzaam) {
+        if (isWerkzaam) {
             string.append("Werkzaam");
         } else {
             string.append("Niet werkzaam");
@@ -80,3 +80,5 @@ public class Persoon implements Serializable {
         return string.toString();
     }
 }
+
+

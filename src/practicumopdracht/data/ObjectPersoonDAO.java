@@ -23,10 +23,11 @@ public class ObjectPersoonDAO extends PersoonDao {
 
             for (Persoon persoon : objects) {
                 objectOutputStream.writeObject(persoon);
+                objectOutputStream.writeByte(bedrijf.getIdFor(persoon.getHoortBij()));
+
+                System.out.println(bedrijf.getIdFor(persoon.getHoortBij()));
             }
 
-            fileOutputStream.close();
-            objectOutputStream.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -49,24 +50,21 @@ public class ObjectPersoonDAO extends PersoonDao {
             if (aantalObjecten > -1) {
                 for (int i = 0; i < aantalObjecten; i++) {
                     Persoon persoon = (Persoon) objectInputStream.readObject();
+                    int bedrijfId = objectInputStream.readByte();
+                    persoon.setHoortBij(bedrijf.getById(bedrijfId));
 
-                    System.out.println(persoon.getHoortBij());
-                    System.out.println(bedrijf.getById(0));
 
-                    for (Bedrijf bedrijf : bedrijf.getAll()) {
-                        if (persoon.getHoortBij().getNaam().equals(bedrijf.getNaam())) {
-                            persoon.setHoortBij(bedrijf);
-                            this.objects.add(persoon);
-                        }
-                    }
+                    this.objects.add(persoon);
                 }
             }
 
             fileInputStream.close();
             objectInputStream.close();
-        } catch (FileNotFoundException e) {
+        } catch (
+                FileNotFoundException e) {
             System.out.println("Het bestand is niet gevonden");
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException |
+                ClassNotFoundException e) {
             System.out.println("De klasse is niet gevonden");
             e.printStackTrace();
         }

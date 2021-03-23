@@ -27,7 +27,7 @@ public class PersoonView extends View {
     private final VBox rootVbox = new VBox();
     private final VBox topForm = new VBox();
     private final HBox actions = new HBox();
-    private final HBox bottomActions = new HBox();
+    private final VBox bottomActions = new VBox();
 
     /**
      * Lijst nodes
@@ -69,6 +69,14 @@ public class PersoonView extends View {
      */
     private final Alert alert = new Alert(Alert.AlertType.INFORMATION);
 
+    /**
+     * Sorteer buttons
+     */
+    private final ToggleGroup toggleGroup = new ToggleGroup();
+    private final RadioButton sorteerAZRadioButton = new RadioButton("Type #1 (A-Z)");
+    private final RadioButton sorteerZARadioButton = new RadioButton("Type #2 (Z-A)");
+    private final RadioButton sorteerLengteAscRadioButton = new RadioButton("Type #1 Lengte (ASC)");
+    private final RadioButton sorteerLengteDescRadioButton = new RadioButton("Type #2 Lengte (DESC)");
 
     /**
      * Constructor BedrijfView
@@ -81,12 +89,6 @@ public class PersoonView extends View {
      * View init
      */
     private void initializeRoot() {
-//        // menu bar
-//        fileItem.getItems().addAll(fileSave, fileLoad, fileClose);
-//        menuBar.getMenus().addAll(fileItem, sortItem);
-//        VBox MenuvBox = new VBox(menuBar);
-
-
         // Bedrijven comboBox
         HBox bedrijvenComboBox = new HBox();
         this.bedrijvenCombo.setPrefWidth(120);
@@ -125,13 +127,53 @@ public class PersoonView extends View {
 
         // actions sectie
         submitBtn.prefWidthProperty().bind(this.topForm.widthProperty());
+        actions.setPadding(new Insets(10, 10, 10, 10));
         this.actions.getChildren().add(submitBtn);
 
         // list sectie
         this.listView.prefWidthProperty().bind(this.list.widthProperty());
         this.list.getChildren().add(this.listView);
 
-        // Bottom actions gridpane
+        // link to toggle group
+        sorteerAZRadioButton.setToggleGroup(toggleGroup);
+        sorteerZARadioButton.setToggleGroup(toggleGroup);
+        sorteerLengteAscRadioButton.setToggleGroup(toggleGroup);
+        sorteerLengteDescRadioButton.setToggleGroup(toggleGroup);
+
+        // Bottom actions gridpanes
+
+        // sort gridpane
+
+
+        GridPane gpSort = new GridPane();
+        ColumnConstraints colSort0 = new ColumnConstraints();
+        ColumnConstraints colSort1 = new ColumnConstraints();
+        ColumnConstraints colSort2 = new ColumnConstraints();
+        ColumnConstraints colSort3 = new ColumnConstraints();
+
+        colSort0.setPercentWidth(25);
+        colSort1.setPercentWidth(25);
+        colSort2.setPercentWidth(25);
+        colSort3.setPercentWidth(25);
+
+        colSort0.setHalignment(HPos.CENTER);
+        colSort1.setHalignment(HPos.CENTER);
+        colSort2.setHalignment(HPos.CENTER);
+        colSort3.setHalignment(HPos.CENTER);
+
+        gpSort.getColumnConstraints().addAll(colSort0, colSort1, colSort2, colSort3);
+        gpSort.prefWidthProperty().bind(this.bottomActions.widthProperty());
+
+        gpSort.setHgap(20);
+        gpSort.setVgap(20);
+        gpSort.setPadding(new Insets(10, 10, 10, 10));
+
+        gpSort.add(sorteerAZRadioButton, 0, 0);
+        gpSort.add(sorteerZARadioButton, 1, 0);
+        gpSort.add(sorteerLengteAscRadioButton, 2, 0);
+        gpSort.add(sorteerLengteDescRadioButton, 3, 0);
+
+        // buttons gridpane
         GridPane gp = new GridPane();
         ColumnConstraints col0 = new ColumnConstraints();
         ColumnConstraints col1 = new ColumnConstraints();
@@ -148,18 +190,54 @@ public class PersoonView extends View {
         gp.getColumnConstraints().addAll(col0, col1, col2);
         gp.prefWidthProperty().bind(this.bottomActions.widthProperty());
 
-        gp.add(this.nieuwBtn, 0, 0);
-        gp.add(this.deleteBtn, 1, 0);
-        gp.add(this.returnBtn, 2, 0);
+        gp.setHgap(20);
+        gp.setVgap(20);
+        gp.setPadding(new Insets(10, 10, 10, 10));
 
         this.nieuwBtn.setMaxWidth(1000);
         this.deleteBtn.setMaxWidth(1000);
         this.returnBtn.setMaxWidth(1000);
 
-        this.bottomActions.getChildren().addAll(gp);
+        gp.add(this.nieuwBtn, 0, 1);
+        gp.add(this.deleteBtn, 1, 1);
+        gp.add(this.returnBtn, 2, 1);
+
+        this.bottomActions.getChildren().addAll(gpSort, gp);
 
         // root box sectie
         this.rootVbox.getChildren().addAll(this.topForm, this.actions, this.list, this.bottomActions);
+    }
+
+    /**
+     * Stel lijst in van personen en selecteerd des betreffende bedrijf
+     *
+     * @param bedrijf
+     * @param personen
+     */
+    public void setPersonen(Bedrijf bedrijf, ObservableList<Persoon> personen) {
+        this.getBedrijvenComboField().getSelectionModel().select(bedrijf);
+        listView.getItems().clear();
+        listView.getItems().addAll(personen);
+    }
+
+    public ComboBox<Bedrijf> getBedrijvenComboField() {
+        return bedrijvenComboField;
+    }
+
+    public TextField getPersoonNaamField() {
+        return persoonNaamField;
+    }
+
+    public TextField getPersoonLengteField() {
+        return persoonLengteField;
+    }
+
+    public DatePicker getGeboortDatumField() {
+        return geboortDatumField;
+    }
+
+    public CheckBox getIsActiefField() {
+        return isActiefField;
     }
 
     /**
@@ -167,8 +245,52 @@ public class PersoonView extends View {
      *
      * @return ListView Node
      */
-    public ListView getListView() {
+    public ListView<Persoon> getListView() {
         return listView;
+    }
+
+    /**
+     * Sorteer radio buttons group
+     * @return ToggleGroup node
+     */
+    public ToggleGroup getToggleGroup() {
+        return toggleGroup;
+    }
+
+    /**
+     * Omhoog sorteren op naam radio knop
+     *
+     * @return RadioButton Node
+     */
+    public RadioButton getSorteerAZRadioButton() {
+        return sorteerAZRadioButton;
+    }
+
+    /**
+     * Omlaag sorteren op naam radio knop
+     *
+     * @return RadioButton Node
+     */
+    public RadioButton getSorteerZARadioButton() {
+        return sorteerZARadioButton;
+    }
+
+    /**
+     * Omhoog sorteren op lengte radio knop
+     *
+     * @return RadioButton Node
+     */
+    public RadioButton getSorteerLengteAscRadioButton() {
+        return sorteerLengteAscRadioButton;
+    }
+
+    /**
+     * Omlaag sorteren op lengte radio knop
+     *
+     * @return RadioButton Node
+     */
+    public RadioButton getSorteerLengteDescRadioButton() {
+        return sorteerLengteDescRadioButton;
     }
 
     /**
@@ -205,34 +327,6 @@ public class PersoonView extends View {
      */
     public Button getNieuwBtn() {
         return nieuwBtn;
-    }
-
-
-    public void setPersonen(Bedrijf bedrijf, ObservableList<Persoon> personen) {
-        this.getBedrijvenComboField().getSelectionModel().select(bedrijf);
-        listView.getItems().clear();
-        listView.getItems().addAll(personen);
-    }
-
-
-    public ComboBox<Bedrijf> getBedrijvenComboField() {
-        return bedrijvenComboField;
-    }
-
-    public TextField getPersoonNaamField() {
-        return persoonNaamField;
-    }
-
-    public TextField getPersoonLengteField() {
-        return persoonLengteField;
-    }
-
-    public DatePicker getGeboortDatumField() {
-        return geboortDatumField;
-    }
-
-    public CheckBox getIsActiefField() {
-        return isActiefField;
     }
 
     /**
