@@ -80,32 +80,6 @@ public class PersoonController extends Controller {
     }
 
     /**
-     * Sort function
-     * @param selectedToggle
-     */
-    private void handleSort(Toggle selectedToggle) {
-        if (view.getToggleGroup().getSelectedToggle() == view.getSorteerAZRadioButton()) {
-            Comparator<Persoon> sort = new PersoonNaamComparator("ASC");
-            persoonObservableList.sort(sort);
-            updateSortedList();
-        } else if (view.getToggleGroup().getSelectedToggle() == view.getSorteerZARadioButton()) {
-            Comparator<Persoon> sort = new PersoonNaamComparator("DESC");
-            persoonObservableList.sort(sort);
-            updateSortedList();
-        } else if (view.getToggleGroup().getSelectedToggle() == view.getSorteerLengteAscRadioButton()) {
-            Comparator<Persoon> sort = new PersoonLengteComparator("ASC");
-            persoonObservableList.sort(sort);
-            updateSortedList();
-        } else if (view.getToggleGroup().getSelectedToggle() == view.getSorteerLengteDescRadioButton()) {
-            Comparator<Persoon> sort = new PersoonLengteComparator("DESC");
-            persoonObservableList.sort(sort);
-            updateSortedList();
-        } else {
-
-        }
-    }
-
-    /**
      * Regelt handelingen binnen de Persoon applicatie
      *
      * @param command de te verrichtte handeling
@@ -215,28 +189,26 @@ public class PersoonController extends Controller {
      */
     private boolean validateFields() {
         StringBuilder string = new StringBuilder();
-        string.append("De volgende fouten zijn gevonden: \n");
 
-        if (view.getPersoonNaamField().getText().isBlank() || view.getPersoonLengteField().getText().isBlank()) {
+        boolean persoonNaamCheck = view.getPersoonNaamField().getText().isBlank();
+        boolean persoonLengteCheck = view.getPersoonLengteField().getText().isBlank();
 
-            if (view.getPersoonNaamField().getText().isBlank()) {
-                string.append("- Persoon naam is verplicht! \n");
-            }
+        if (persoonNaamCheck) {
+            string.append("- Persoon naam is verplicht! \n");
+        }
 
-            if (view.getPersoonLengteField().getText().isBlank()) {
-                string.append("- Persoon lengte is verplicht! \n");
-            }
+        if (persoonLengteCheck) {
+            string.append("- Persoon lengte is niet correct ingevuld! \n");
+        }
 
-            if (view.getGeboortDatumField().getValue().isBefore(LocalDate.now())) {
-                string.append("- Persoon geboortedatum moet voor huidige datum liggen! \n");
-            }
-
-            this.displayAlert("Opslaan", string.toString(), "WARNING");
-            return false;
+        if (!string.toString().isBlank()) {
+        this.displayAlert("De volgende fouten zijn gevonden:", string.toString(), "WARNING");
+        return false;
         } else {
             return true;
         }
     }
+
 
     /**
      * Weergeven van een melding
@@ -266,7 +238,36 @@ public class PersoonController extends Controller {
         return view.getAlert().showAndWait();
     }
 
+    /**
+     * Sorteren op verschillende wijze
+     *
+     * @param selectedToggle De huidige geselecteerde optie
+     */
+    private void handleSort(Toggle selectedToggle) {
+        if (view.getToggleGroup().getSelectedToggle() == view.getSorteerAZRadioButton()) {
+            Comparator<Persoon> sort = new PersoonNaamComparator("ASC").thenComparing(new PersoonLengteComparator("ASC"));
+            persoonObservableList.sort(sort);
+            updateSortedList();
+        } else if (view.getToggleGroup().getSelectedToggle() == view.getSorteerZARadioButton()) {
+            Comparator<Persoon> sort = new PersoonNaamComparator("DESC").thenComparing(new PersoonLengteComparator("DESC"));
+            persoonObservableList.sort(sort);
+            updateSortedList();
+        } else if (view.getToggleGroup().getSelectedToggle() == view.getSorteerLengteAscRadioButton()) {
+            Comparator<Persoon> sort = new PersoonLengteComparator("ASC").thenComparing(new PersoonNaamComparator("ASC"));
+            persoonObservableList.sort(sort);
+            updateSortedList();
+        } else if (view.getToggleGroup().getSelectedToggle() == view.getSorteerLengteDescRadioButton()) {
+            Comparator<Persoon> sort = new PersoonLengteComparator("DESC").thenComparing(new PersoonNaamComparator("DESC"));
+            persoonObservableList.sort(sort);
+            updateSortedList();
+        } else {
 
+        }
+    }
+
+    /**
+     * Leegt alle velden
+     */
     private void clearFields() {
         view.getPersoonNaamField().clear();
         view.getIsActiefField().setSelected(false);
@@ -274,6 +275,9 @@ public class PersoonController extends Controller {
         view.getGeboortDatumField().getEditor().clear();
     }
 
+    /**
+     * Werkt de lijst bij vanuit de DAO
+     */
     private void refreshList() {
         persoonObservableList = FXCollections.observableList(MainApplication.getPersoon().getAllFor(bedrijfInBewerking));
         view.setPersonen(bedrijfInBewerking, persoonObservableList);

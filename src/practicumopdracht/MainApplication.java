@@ -1,27 +1,24 @@
 package practicumopdracht;
 
 import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import practicumopdracht.controllers.*;
 import practicumopdracht.data.*;
-import practicumopdracht.models.Bedrijf;
-
-import java.util.List;
 
 public class MainApplication extends Application {
 
     private static BorderPane mainPane;
     private static Stage primaryStage;
 
-    //        private static BedrijfDao bedrijf = new TextBedrijfDao();
-//    private static BedrijfDao bedrijf = new FakeBedrijfDao();
+    //private static BedrijfDao bedrijf = new TextBedrijfDao();
+    //private static BedrijfDao bedrijf = new FakeBedrijfDao();
     private static BedrijfDao bedrijf = new BinaryBedrijfDAO();
 
-    //        private static PersoonDao persoon = new TextPersoonDao();
-//    private static PersoonDao persoon = new FakePersoonDao();
+    //private static PersoonDao persoon = new TextPersoonDao();
+    //private static PersoonDao persoon = new FakePersoonDao();
     private static PersoonDao persoon = new ObjectPersoonDAO();
 
 
@@ -38,27 +35,26 @@ public class MainApplication extends Application {
         }
 
         primaryStage = stage;
+        mainPane = new BorderPane();
 
         bedrijf.load();
         persoon.load();
 
-        mainPane = new BorderPane();
+
         BedrijfController bedrijf = new BedrijfController();
         switchController(bedrijf);
-        stage.setScene(new Scene(mainPane));
 
-
-        stage.setTitle(this.TITLE);
-        stage.setWidth(this.WIDTH);
-        stage.setHeight(this.HEIGHT);
-        stage.show();
+        primaryStage.setTitle(this.TITLE);
+        primaryStage.setWidth(this.WIDTH);
+        primaryStage.setHeight(this.HEIGHT);
+        primaryStage.show();
     }
 
     /**
      * Handles Switching of controllers
      */
     public static void switchController(Controller controller) {
-        mainPane.setCenter(controller.getView());
+        primaryStage.setScene(new Scene(controller.getView()));
     }
 
     public static BedrijfDao getBedrijven() {

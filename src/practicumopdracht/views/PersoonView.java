@@ -10,8 +10,6 @@ import javafx.scene.Parent;
 import practicumopdracht.models.Bedrijf;
 import practicumopdracht.models.Persoon;
 
-import java.util.List;
-
 /**
  * Class Persoonview
  * <p>
@@ -220,22 +218,47 @@ public class PersoonView extends View {
         listView.getItems().addAll(personen);
     }
 
+    /**
+     * Selectie voor bedrijven
+     *
+     * @return ComboBox node
+     */
     public ComboBox<Bedrijf> getBedrijvenComboField() {
         return bedrijvenComboField;
     }
 
+    /**
+     * Haalt naam veld op
+     *
+     * @return TextField node
+     */
     public TextField getPersoonNaamField() {
         return persoonNaamField;
     }
 
+    /**
+     * Haalt lengte veld op
+     *
+     * @return TextField node
+     */
     public TextField getPersoonLengteField() {
         return persoonLengteField;
     }
 
+    /**
+     * geboortedatum veld op
+     *
+     * @return DatePicker node
+     */
     public DatePicker getGeboortDatumField() {
         return geboortDatumField;
     }
 
+    /**
+     * haalt werkzaamheid veld op
+     *
+     * @return CheckBox node
+     */
     public CheckBox getIsActiefField() {
         return isActiefField;
     }
@@ -251,6 +274,7 @@ public class PersoonView extends View {
 
     /**
      * Sorteer radio buttons group
+     *
      * @return ToggleGroup node
      */
     public ToggleGroup getToggleGroup() {
