@@ -1,13 +1,9 @@
 package practicumopdracht.models;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 /**
- * Class Bedrijf
+ * Model Bedrijf
  * <p>
- * Hier wordt de data voor een bedrijf
- * toegevoegd, aangepast, verwijderd
+ * Hier wordt de data voor een bedrijf toegevoegd, aangepast, verwijderd
  * of uitgelezen
  */
 public class Bedrijf {
@@ -60,7 +56,7 @@ public class Bedrijf {
     public void setOmschrijving(String omschrijving) {
         this.omschrijving = omschrijving;
     }
-    
+
     /**
      * Geeft een string representatie weer
      *

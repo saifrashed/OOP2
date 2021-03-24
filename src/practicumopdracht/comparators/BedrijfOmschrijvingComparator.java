@@ -4,8 +4,10 @@ import practicumopdracht.models.Bedrijf;
 
 import java.util.Comparator;
 
+/**
+ * Comparator voor bedrijfsomschrijving
+ */
 public class BedrijfOmschrijvingComparator implements Comparator<Bedrijf> {
-
     String sortType;
 
     public BedrijfOmschrijvingComparator(String sortType) {

@@ -3,14 +3,28 @@ package practicumopdracht.models;
 import java.time.LocalDate;
 import java.io.Serializable;
 
-
+/**
+ * Model Persoon
+ * <p>
+ * Hier wordt de data voor een persoon toegevoegd, aangepast, verwijderd
+ * of uitgelezen.
+ */
 public class Persoon implements Serializable {
-    private String naam;
-    private LocalDate geboorteDatum;
-    private boolean isWerkzaam;
-    private double lengte;
+    private final String naam;
+    private final LocalDate geboorteDatum;
+    private final boolean isWerkzaam;
+    private final double lengte;
     private transient Bedrijf hoortBij;
 
+    /**
+     * Constructor Persoon
+     *
+     * @param naam          Naam van persoon
+     * @param geboorteDatum Geboortedatum van persoon
+     * @param isWerkzaam    Of persoon werkzaam is
+     * @param lengte        Lengte van persoon
+     * @param bedrijf       Behorende bedrijf van persoon
+     */
     public Persoon(String naam, LocalDate geboorteDatum, boolean isWerkzaam, double lengte, Bedrijf bedrijf) {
         this.naam = naam;
         this.geboorteDatum = geboorteDatum;
@@ -19,46 +33,65 @@ public class Persoon implements Serializable {
         this.hoortBij = bedrijf;
     }
 
+    /**
+     * Haalt naam op van persoon
+     *
+     * @return String
+     */
     public String getNaam() {
         return naam;
     }
 
-    public void setNaam(String naam) {
-        this.naam = naam;
-    }
-
+    /**
+     * Haalt geboortdatum op van persoon
+     *
+     * @return Localdate
+     */
     public LocalDate getGeboorteDatum() {
         return geboorteDatum;
     }
 
-    public void setGeboorteDatum(LocalDate geboorteDatum) {
-        this.geboorteDatum = geboorteDatum;
-    }
-
+    /**
+     * Haalt werkzaamheid op van persoon
+     *
+     * @return Boolean
+     */
     public boolean isWerkzaam() {
         return isWerkzaam;
     }
 
-    public void setWerkzaam(boolean werkzaam) {
-        isWerkzaam = werkzaam;
-    }
-
+    /**
+     * Haalt lengte op van persoon
+     *
+     * @return Double
+     */
     public double getLengte() {
         return lengte;
     }
 
-    public void setLengte(double lengte) {
-        this.lengte = lengte;
-    }
-
+    /**
+     * Haalt bedrijf op van persoon
+     *
+     * @return Bedrijf
+     */
     public Bedrijf getHoortBij() {
         return hoortBij;
     }
 
+    /**
+     * Stelt bedrijf in voor persoon
+     *
+     * @param hoortBij De behorende bedrijf model
+     */
     public void setHoortBij(Bedrijf hoortBij) {
         this.hoortBij = hoortBij;
     }
 
+    /**
+     * Geeft een string representatie weer
+     *
+     * @return Een string met informatie over dit klasse
+     */
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();

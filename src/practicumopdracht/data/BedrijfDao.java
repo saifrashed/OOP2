@@ -25,7 +25,9 @@ public abstract class BedrijfDao implements DAO<Bedrijf> {
         objects.remove(item);
     }
 
-    public void removeAll() { objects.removeAll(objects); }
+    public void removeAll() {
+        objects.removeAll(objects);
+    }
 
     public int getIdFor(Bedrijf bedrijf) {
         return this.objects.indexOf(bedrijf);

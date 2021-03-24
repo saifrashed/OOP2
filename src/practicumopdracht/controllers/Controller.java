@@ -4,7 +4,7 @@ import javafx.scene.Parent;
 
 /**
  * Abstract class Controller
- *
+ * <p>
  * Bevat abstracte methodes voor Children Controllers
  */
 public abstract class Controller {

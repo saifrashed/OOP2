@@ -1,31 +1,39 @@
 package practicumopdracht;
 
 import javafx.application.Application;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import practicumopdracht.controllers.*;
 import practicumopdracht.data.*;
 
+/**
+ * MainApplication klasse
+ * <p>
+ * Hier wordt de applicatie geinitialiseerd in de start methode.
+ * Ook worden gegevens ingeladen en beschikbaar gesteld voor de
+ * controllers.
+ */
 public class MainApplication extends Application {
 
-    private static BorderPane mainPane;
     private static Stage primaryStage;
 
     //private static BedrijfDao bedrijf = new TextBedrijfDao();
     //private static BedrijfDao bedrijf = new FakeBedrijfDao();
-    private static BedrijfDao bedrijf = new BinaryBedrijfDAO();
+    private static final BedrijfDao bedrijf = new BinaryBedrijfDAO();
 
     //private static PersoonDao persoon = new TextPersoonDao();
     //private static PersoonDao persoon = new FakePersoonDao();
-    private static PersoonDao persoon = new ObjectPersoonDAO();
-
+    private static final PersoonDao persoon = new ObjectPersoonDAO();
 
     private final String TITLE = String.format("Practicumopdracht OOP2 - %s", Main.studentNaam);
     private final int WIDTH = 640;
     private final int HEIGHT = 480;
 
+    /**
+     * Applicatie start methode (hier initialiseerd de JavaFX applicatie)
+     *
+     * @param stage Stage JavaFX object
+     */
     @Override
     public void start(Stage stage) {
         if (!Main.launchedFromMain) {
@@ -34,15 +42,12 @@ public class MainApplication extends Application {
             return;
         }
 
-        primaryStage = stage;
-        mainPane = new BorderPane();
+        primaryStage = stage; // de stage bereikbaar maken voor andere methodes
 
-        bedrijf.load();
-        persoon.load();
+        bedrijf.load(); // Bedrijf gegevens inladen
+        persoon.load(); // Persoon gegevens inladen
 
-
-        BedrijfController bedrijf = new BedrijfController();
-        switchController(bedrijf);
+        switchController(new BedrijfController()); // Bedrijf als eerst weergeven
 
         primaryStage.setTitle(this.TITLE);
         primaryStage.setWidth(this.WIDTH);
@@ -57,14 +62,29 @@ public class MainApplication extends Application {
         primaryStage.setScene(new Scene(controller.getView()));
     }
 
+    /**
+     * BedrijfDAO ophalen
+     *
+     * @return BedrijfDAO object
+     */
     public static BedrijfDao getBedrijven() {
         return bedrijf;
     }
 
+    /**
+     * PersoonDAO ophalen
+     *
+     * @return PersoonDAO object
+     */
     public static PersoonDao getPersoon() {
         return persoon;
     }
 
+    /**
+     * Applicatie stage ophalen
+     *
+     * @return Stage object
+     */
     public static Stage getPrimaryStage() {
         return primaryStage;
     }

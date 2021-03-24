@@ -9,10 +9,20 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+/**
+ * Class TextBedrijfDao
+ * <p>
+ * Opslaan en inladen van text data om te gebruiken in de applicatie.
+ */
 public class TextPersoonDao extends PersoonDao {
-    private File file = new File("persoon.txt");
-    private BedrijfDao bedrijf = MainApplication.getBedrijven();
+    private final File file = new File("persoon.txt");
+    private final BedrijfDao bedrijf = MainApplication.getBedrijven();
 
+    /**
+     * Regelt het opslaan van de  gegevens
+     *
+     * @return Boolean
+     */
     @Override
     public boolean save() {
         PrintWriter writer = null;
@@ -35,6 +45,11 @@ public class TextPersoonDao extends PersoonDao {
         }
     }
 
+    /**
+     * Regelt het inladen van gegevens
+     *
+     * @return Boolean
+     */
     @Override
     public boolean load() {
         if (!file.exists()) {
@@ -50,7 +65,7 @@ public class TextPersoonDao extends PersoonDao {
 
                 Bedrijf bijbehorendeBedrijf = bedrijf.getById(Integer.parseInt(parts[4]));
 
-                Persoon f = new Persoon(parts[0], LocalDate.parse(parts[1]), Boolean.parseBoolean(parts[2]) , Double.parseDouble(parts[3]), bijbehorendeBedrijf);
+                Persoon f = new Persoon(parts[0], LocalDate.parse(parts[1]), Boolean.parseBoolean(parts[2]), Double.parseDouble(parts[3]), bijbehorendeBedrijf);
 
                 this.objects.add(f);
             }

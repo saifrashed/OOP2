@@ -15,7 +15,6 @@ import practicumopdracht.models.Bedrijf;
 import practicumopdracht.models.Persoon;
 import practicumopdracht.views.PersoonView;
 
-import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Optional;
 
@@ -32,7 +31,7 @@ public class PersoonController extends Controller {
     /**
      * Model & View declaraties
      */
-    private PersoonView view;
+    private final PersoonView view;
     private Bedrijf bedrijfInBewerking;
     private ObservableList<Persoon> persoonObservableList;
 
@@ -134,7 +133,7 @@ public class PersoonController extends Controller {
         if (hasSelectedPersoon()) {
             Optional<ButtonType> option = displayAlert("Verwijderen", "Weet u zeker dat u dit wilt verwijderen?", "CONFIRMATION");
             if (option.get() == ButtonType.OK) {
-                MainApplication.getPersoon().remove((Persoon) view.getListView().getSelectionModel().getSelectedItem());
+                MainApplication.getPersoon().remove(view.getListView().getSelectionModel().getSelectedItem());
                 refreshList();
             }
         }
@@ -202,8 +201,8 @@ public class PersoonController extends Controller {
         }
 
         if (!string.toString().isBlank()) {
-        this.displayAlert("De volgende fouten zijn gevonden:", string.toString(), "WARNING");
-        return false;
+            this.displayAlert("De volgende fouten zijn gevonden:", string.toString(), "WARNING");
+            return false;
         } else {
             return true;
         }
@@ -260,8 +259,6 @@ public class PersoonController extends Controller {
             Comparator<Persoon> sort = new PersoonLengteComparator("DESC").thenComparing(new PersoonNaamComparator("DESC"));
             persoonObservableList.sort(sort);
             updateSortedList();
-        } else {
-
         }
     }
 

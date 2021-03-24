@@ -65,15 +65,15 @@ public class BedrijfView extends View {
      * Menu items
      */
 
-    private MenuItem save = new MenuItem("Opslaan");
-    private MenuItem load = new MenuItem("Laden");
-    private MenuItem quit = new MenuItem("Afsluiten");
+    private final MenuItem save = new MenuItem("Opslaan");
+    private final MenuItem load = new MenuItem("Laden");
+    private final MenuItem quit = new MenuItem("Afsluiten");
 
-    private MenuItem sortAZ = new MenuItem("Naam (A-Z)");
-    private MenuItem sortZA = new MenuItem("Naam (Z-A)");
+    private final MenuItem sortAZ = new MenuItem("Naam (A-Z)");
+    private final MenuItem sortZA = new MenuItem("Naam (Z-A)");
 
-    private Menu saveLoad = new Menu("Bestand", null, save, load, quit);
-    private Menu sort = new Menu("Sorteren", null, sortAZ, sortZA);
+    private final Menu saveLoad = new Menu("Bestand", null, save, load, quit);
+    private final Menu sort = new Menu("Sorteren", null, sortAZ, sortZA);
 
     /**
      * Constructor BedrijfView
@@ -142,7 +142,7 @@ public class BedrijfView extends View {
         this.bottomActions.getChildren().addAll(gp);
 
         // root box sectie
-        this.rootVbox.getChildren().addAll(new MenuBar(saveLoad,sort), this.topForm, this.actions, this.list, this.bottomActions);
+        this.rootVbox.getChildren().addAll(new MenuBar(saveLoad, sort), this.topForm, this.actions, this.list, this.bottomActions);
     }
 
 
@@ -230,6 +230,7 @@ public class BedrijfView extends View {
 
     /**
      * Haalt opslaan knop op
+     *
      * @return Menuitem node
      */
     public MenuItem getSave() {
@@ -238,6 +239,7 @@ public class BedrijfView extends View {
 
     /**
      * Haalt laad knop op
+     *
      * @return Menuitem node
      */
     public MenuItem getLoad() {
@@ -246,6 +248,7 @@ public class BedrijfView extends View {
 
     /**
      * Haalt Afsluit knop op
+     *
      * @return Menuitem node
      */
     public MenuItem getQuit() {
@@ -254,6 +257,7 @@ public class BedrijfView extends View {
 
     /**
      * Sorteer van A naar Z
+     *
      * @return MenuItem node
      */
     public MenuItem getSortAZ() {
@@ -262,6 +266,7 @@ public class BedrijfView extends View {
 
     /**
      * Sorteer van Z naar A
+     *
      * @return Menuitem node
      */
     public MenuItem getSortZA() {

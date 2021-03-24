@@ -5,10 +5,20 @@ import practicumopdracht.models.Bedrijf;
 import java.io.*;
 import java.time.LocalDate;
 
+/**
+ * Class BinaryBedrijfDAO
+ * <p>
+ * Opslaan en inladen van Binary data om te gebruiken in de applicatie.
+ */
 public class BinaryBedrijfDAO extends BedrijfDao {
 
     private static final String FILENAME = "bedrijf.dat";
 
+    /**
+     * Regelt het opslaan van de  gegevens
+     *
+     * @return Boolean
+     */
     @Override
     public boolean save() {
         File file = new File(FILENAME);
@@ -30,6 +40,11 @@ public class BinaryBedrijfDAO extends BedrijfDao {
         return true;
     }
 
+    /**
+     * Regelt het inladen van gegevens
+     *
+     * @return Boolean
+     */
     @Override
     public boolean load() {
         objects.clear();

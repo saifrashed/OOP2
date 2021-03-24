@@ -1,16 +1,25 @@
 package practicumopdracht.data;
 
 import practicumopdracht.MainApplication;
-import practicumopdracht.models.Bedrijf;
 import practicumopdracht.models.Persoon;
 
 import java.io.*;
 
+/**
+ * Class ObjectPersoonDAO
+ * <p>
+ * Opslaan en inladen van Object data om te gebruiken in de applicatie.
+ */
 public class ObjectPersoonDAO extends PersoonDao {
 
     private static final String FILENAME = "persoon.bin";
-    private BedrijfDao bedrijf = MainApplication.getBedrijven();
+    private final BedrijfDao bedrijf = MainApplication.getBedrijven();
 
+    /**
+     * Regelt het opslaan van de  gegevens
+     *
+     * @return Boolean
+     */
     @Override
     public boolean save() {
         File file = new File(FILENAME);
@@ -24,8 +33,6 @@ public class ObjectPersoonDAO extends PersoonDao {
             for (Persoon persoon : objects) {
                 objectOutputStream.writeObject(persoon);
                 objectOutputStream.writeByte(bedrijf.getIdFor(persoon.getHoortBij()));
-
-                System.out.println(bedrijf.getIdFor(persoon.getHoortBij()));
             }
 
         } catch (Exception ex) {
@@ -35,6 +42,11 @@ public class ObjectPersoonDAO extends PersoonDao {
         return true;
     }
 
+    /**
+     * Regelt het inladen van gegevens
+     *
+     * @return Boolean
+     */
     @Override
     public boolean load() {
         objects.clear();
@@ -50,9 +62,7 @@ public class ObjectPersoonDAO extends PersoonDao {
             if (aantalObjecten > -1) {
                 for (int i = 0; i < aantalObjecten; i++) {
                     Persoon persoon = (Persoon) objectInputStream.readObject();
-                    int bedrijfId = objectInputStream.readByte();
-                    persoon.setHoortBij(bedrijf.getById(bedrijfId));
-
+                    persoon.setHoortBij(bedrijf.getById(objectInputStream.readByte()));
 
                     this.objects.add(persoon);
                 }

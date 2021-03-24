@@ -2,12 +2,12 @@ package practicumopdracht.comparators;
 
 import practicumopdracht.models.Bedrijf;
 
-import java.io.Serializable;
 import java.util.Comparator;
-import java.util.Objects;
 
+/**
+ * Comparator voor bedrijfsnaam
+ */
 public class BedrijfNaamComparator implements Comparator<Bedrijf> {
-
     String sortType;
 
     public BedrijfNaamComparator(String sortType) {

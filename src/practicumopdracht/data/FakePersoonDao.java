@@ -6,12 +6,28 @@ import practicumopdracht.models.Bedrijf;
 
 import java.time.LocalDate;
 
+/**
+ * Class FakePersoonDao
+ * <p>
+ * Creëren van nepdata om te gebruiken in de applicatie voor test doeleinden.
+ */
 public class FakePersoonDao extends PersoonDao {
+
+    /**
+     * Regelt het opslaan van de  gegevens
+     *
+     * @return Boolean
+     */
     @Override
     public boolean save() {
         return false;
     }
 
+    /**
+     * Regelt het inladen van gegevens
+     *
+     * @return Boolean
+     */
     @Override
     public boolean load() {
         Bedrijf eerste = MainApplication.getBedrijven().getById(0);

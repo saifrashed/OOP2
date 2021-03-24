@@ -1,8 +1,12 @@
 package practicumopdracht.comparators;
 
 import practicumopdracht.models.Persoon;
+
 import java.util.Comparator;
 
+/**
+ * Comparator voor persoonslengte
+ */
 public class PersoonLengteComparator implements Comparator<Persoon> {
     String sortType;
 

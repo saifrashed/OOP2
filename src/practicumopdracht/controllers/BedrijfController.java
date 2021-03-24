@@ -27,7 +27,7 @@ public class BedrijfController extends Controller {
     /**
      * Model & View declaraties
      */
-    private BedrijfView view;
+    private final BedrijfView view;
     private ObservableList<Bedrijf> bedrijfObservableList;
 
     /**

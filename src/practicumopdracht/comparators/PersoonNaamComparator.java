@@ -1,10 +1,12 @@
 package practicumopdracht.comparators;
 
-import practicumopdracht.models.Bedrijf;
 import practicumopdracht.models.Persoon;
 
 import java.util.Comparator;
 
+/**
+ * Comparator voor persoonnaam
+ */
 public class PersoonNaamComparator implements Comparator<Persoon> {
     String sortType;
 

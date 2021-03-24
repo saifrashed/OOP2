@@ -6,10 +6,20 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+/**
+ * Class TextBedrijfDao
+ * <p>
+ * Opslaan en inladen van text data om te gebruiken in de applicatie.
+ */
 public class TextBedrijfDao extends BedrijfDao {
 
     private final File file = new File("bedrijven.txt");
 
+    /**
+     * Regelt het opslaan van de  gegevens
+     *
+     * @return Boolean
+     */
     @Override
     public boolean save() {
         PrintWriter writer = null;
@@ -30,6 +40,11 @@ public class TextBedrijfDao extends BedrijfDao {
         }
     }
 
+    /**
+     * Regelt het inladen van gegevens
+     *
+     * @return Boolean
+     */
     @Override
     public boolean load() {
         if (!file.exists()) {
