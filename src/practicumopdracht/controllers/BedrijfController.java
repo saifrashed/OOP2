@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import practicumopdracht.MainApplication;
 import practicumopdracht.comparators.BedrijfNaamComparator;
+import practicumopdracht.comparators.BedrijfOmschrijvingComparator;
 import practicumopdracht.models.Bedrijf;
 import practicumopdracht.views.BedrijfView;
 
@@ -240,7 +241,7 @@ public class BedrijfController extends Controller {
      * Omhoog sorteren logica
      */
     private void menuSortAZ() {
-        Comparator<Bedrijf> sort = new BedrijfNaamComparator("ASC");
+        Comparator<Bedrijf> sort = new BedrijfNaamComparator("ASC").thenComparing(new BedrijfOmschrijvingComparator("ASC"));
         bedrijfObservableList.sort(sort);
         updateSortedList();
     }
@@ -249,7 +250,7 @@ public class BedrijfController extends Controller {
      * Omlaag sorteren logica
      */
     private void menuSortZA() {
-        Comparator<Bedrijf> sort = new BedrijfNaamComparator("DESC");
+        Comparator<Bedrijf> sort = new BedrijfNaamComparator("DESC").thenComparing(new BedrijfOmschrijvingComparator("DESC"));
         bedrijfObservableList.sort(sort);
         updateSortedList();
     }

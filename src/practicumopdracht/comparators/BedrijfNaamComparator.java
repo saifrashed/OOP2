@@ -2,7 +2,9 @@ package practicumopdracht.comparators;
 
 import practicumopdracht.models.Bedrijf;
 
+import java.io.Serializable;
 import java.util.Comparator;
+import java.util.Objects;
 
 public class BedrijfNaamComparator implements Comparator<Bedrijf> {
 
